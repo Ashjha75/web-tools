@@ -80,7 +80,7 @@ export default function FileList({ files, onFileDeleted, onFileRenamed, loading 
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="spinner border-indigo-600 border-4 w-12 h-12"></div>
+        <div className="spinner spinner-pink w-12 h-12"></div>
       </div>
     );
   }
@@ -101,7 +101,7 @@ export default function FileList({ files, onFileDeleted, onFileRenamed, loading 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.05 }}
-          className="bg-white rounded-2xl shadow-md border border-gray-200 p-4 sm:p-5 hover:shadow-lg transition-shadow"
+          className="card p-4 sm:p-5 hover:shadow-lg transition-shadow"
         >
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             {/* File Icon & Info */}
@@ -157,14 +157,14 @@ export default function FileList({ files, onFileDeleted, onFileRenamed, loading 
               <div className="flex items-center gap-2 flex-shrink-0">
                 <button
                   onClick={() => handleDownload(file.$id, file.name)}
-                  className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                  className="p-2 text-[var(--accent-pink)] hover:bg-pink-50 rounded-lg transition-colors"
                   title="Download"
                 >
                   <Download className="w-5 h-5" />
                 </button>
                 <button
                   onClick={() => startRename(file)}
-                  className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  className="p-2 text-[var(--text-secondary)] hover:bg-gray-100 rounded-lg transition-colors"
                   title="Rename"
                 >
                   <Edit2 className="w-5 h-5" />

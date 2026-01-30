@@ -49,8 +49,8 @@ export default function MyDrive() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 px-4 sm:px-6 lg:px-8 py-8 flex flex-col items-center justify-center">
-      <div className="w-[87%] ">
+    <div className="min-h-screen w-full bg-[var(--bg-main)] px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -59,7 +59,7 @@ export default function MyDrive() {
         >
           <button
             onClick={() => navigate("/")}
-            className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-sm sm:text-base font-medium inline-flex items-center gap-2 transition-colors mb-4 px-3 py-2 rounded-full hover:bg-white/60 border border-transparent hover:border-gray-200 shadow-sm"
+            className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-sm sm:text-base font-medium inline-flex items-center gap-2 transition-colors mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Projects
@@ -67,7 +67,7 @@ export default function MyDrive() {
 
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
-              <img src={logo} alt="myDrive Logo" className="w-14 h-14 sm:w-16 sm:h-16" />
+              <img src={logo} alt="myDrive Logo" className="w-12 h-12 sm:w-14 sm:h-14" />
               <div>
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-[var(--text-primary)]">
                   myDrive
@@ -81,7 +81,7 @@ export default function MyDrive() {
             <button
               onClick={fetchFiles}
               disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-white rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-200 text-[var(--text-primary)] font-medium disabled:opacity-50"
+              className="btn btn-secondary flex items-center gap-2 disabled:opacity-50"
             >
               <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
               Refresh
@@ -94,12 +94,12 @@ export default function MyDrive() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
         >
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
-                <HardDrive className="w-6 h-6 text-indigo-600" />
+          <div className="card p-6">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-[var(--accent-pink)] bg-opacity-10 flex items-center justify-center">
+                <HardDrive className="w-6 h-6 text-[var(--accent-pink)]" />
               </div>
               <div>
                 <p className="text-2xl font-bold text-[var(--text-primary)]">{files.length}</p>
@@ -108,9 +108,9 @@ export default function MyDrive() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
+          <div className="card p-6">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-[var(--accent-pink)] bg-opacity-10 flex items-center justify-center">
                 <span className="text-2xl">📊</span>
               </div>
               <div>
@@ -124,9 +124,9 @@ export default function MyDrive() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 sm:col-span-2 lg:col-span-1">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center">
+          <div className="card p-6 sm:col-span-2 lg:col-span-1">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
                 <span className="text-2xl">🚀</span>
               </div>
               <div>
@@ -153,7 +153,7 @@ export default function MyDrive() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-6 sm:p-8">
+          <div className="card p-6 sm:p-8">
             <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-6 flex items-center gap-2">
               <HardDrive className="w-6 h-6" />
               My Files

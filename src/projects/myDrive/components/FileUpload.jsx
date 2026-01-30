@@ -121,11 +121,11 @@ export default function FileUpload({ onFileUploaded }) {
         onClick={() => fileInputRef.current?.click()}
         className={`
           relative rounded-3xl border-2 border-dashed p-8 sm:p-12 text-center cursor-pointer
-          transition-all duration-200 
+          transition-all duration-200 card
           ${
             isDragging
-              ? "border-indigo-500 bg-indigo-50"
-              : "border-gray-300 bg-white hover:border-indigo-400 hover:bg-gray-50"
+              ? "border-[var(--accent-pink)] bg-pink-50"
+              : "border-[var(--border-light)] hover:border-[var(--accent-pink)] hover:bg-gray-50"
           }
         `}
       >
@@ -141,7 +141,7 @@ export default function FileUpload({ onFileUploaded }) {
           animate={{ scale: isDragging ? 1.05 : 1 }}
           className="flex flex-col items-center gap-4"
         >
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+          <div className="w-16 h-16 rounded-full bg-[var(--accent-pink)] flex items-center justify-center shadow-lg">
             <FileUp className="w-8 h-8 text-white" />
           </div>
           <div>
@@ -157,7 +157,7 @@ export default function FileUpload({ onFileUploaded }) {
 
       {/* Selected Files List */}
       {selectedFiles.length > 0 && (
-        <div className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6">
+        <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-[var(--text-primary)]">
               Selected Files ({selectedFiles.length})
@@ -188,11 +188,11 @@ export default function FileUpload({ onFileUploaded }) {
                     <div className="mt-2">
                       <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-indigo-500 to-purple-600 transition-all duration-300"
+                          className="h-full bg-[var(--accent-pink)] transition-all duration-300"
                           style={{ width: `${fileData.progress}%` }}
                         />
                       </div>
-                      <p className="text-xs text-indigo-600 mt-1">{fileData.progress}%</p>
+                      <p className="text-xs text-[var(--accent-pink)] mt-1">{fileData.progress}%</p>
                     </div>
                   )}
                   {fileData.status === "completed" && (
@@ -221,7 +221,7 @@ export default function FileUpload({ onFileUploaded }) {
             <button
               onClick={uploadFiles}
               disabled={uploadingFiles.length > 0}
-              className="btn w-full mt-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold hover:from-indigo-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="btn btn-pink w-full mt-4 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {uploadingFiles.length > 0 ? (
                 <>
