@@ -4,11 +4,15 @@ import "./App.css";
 import { databases, DATABASE_ID, COLLECTION_ID } from "./lib/appwrite";
 import { AppwriteException } from "appwrite";
 import { Tiles } from "./components/Tiles";
+import { useAuth } from "./context/AuthContext";
+import { Link } from "react-router-dom";
+import { User, LogOut } from "lucide-react";
 
 function App() {
   const [projects, setProjects] = useState([]);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState(null);
+  const { user, logout } = useAuth();
 
   // Fetch projects from Appwrite database
   async function fetchProjects() {
@@ -36,11 +40,35 @@ function App() {
 
   // Fetch projects on component mount
   useEffect(() => {
-    fetchProjects();
-  }, []);
+    if (user) {
+      fetchProjects();
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-[var(--bg-main)] w-full">
+      {/* Navigation Bar */}
+      <nav className="relative z-30 bg-[var(--bg-card)] border-b border-[var(--border-light)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-xl font-bold">Projects Portfolio</h1>
+            <div className="flex items-center gap-4">
+              {user && (
+                <>
+                  <Link
+                    to="/profile"
+                    className="btn btn-secondary btn-sm flex items-center gap-2"
+                  >
+                    <User className="w-4 h-4" />
+                    <span className="hidden sm:inline">{user.name}</span>
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section with Tiles Background */}
       <section className="relative w-full min-h-[600px] sm:min-h-[700px] flex flex-col items-center justify-center overflow-hidden text-center">
         {/* Tiles Background */}
