@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import "./App.css";
 import { client } from "./lib/appwrite";
 import { AppwriteException } from "appwrite";
@@ -8,40 +8,16 @@ import ReactSvg from "/react.svg";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 
 function App() {
-  const [detailHeight, setDetailHeight] = useState(55);
   const [logs, setLogs] = useState([]);
   const [status, setStatus] = useState("idle");
   const [showLogs, setShowLogs] = useState(false);
+  const scrollRef = useRef(null);
 
-  const detailsRef = useRef(null);
-
-  const updateHeight = useCallback(() => {
-    if (detailsRef.current) {
-      setDetailHeight(detailsRef.current.clientHeight);
-    }
-  }, [logs, showLogs]);
-
-  useEffect(() => {
-    updateHeight();
-    window.addEventListener("resize", updateHeight);
-    return () => window.removeEventListener("resize", updateHeight);
-  }, [updateHeight]);
-
-  // Automatically ping the Appwrite server on app load to verify setup
+  // Automatically ping the Appwrite server on app load
   useEffect(() => {
     client.ping().catch((error) => {
       console.error("Failed to ping Appwrite server:", error);
     });
-  }, []);
-
-  useEffect(() => {
-    if (!detailsRef.current) return;
-    detailsRef.current.addEventListener("toggle", updateHeight);
-
-    return () => {
-      if (!detailsRef.current) return;
-      detailsRef.current.removeEventListener("toggle", updateHeight);
-    };
   }, []);
 
   async function sendPing() {
@@ -58,6 +34,7 @@ function App() {
       };
       setLogs((prevLogs) => [log, ...prevLogs]);
       setStatus("success");
+      setShowLogs(true);
     } catch (err) {
       const log = {
         date: new Date(),
@@ -71,356 +48,306 @@ function App() {
       };
       setLogs((prevLogs) => [log, ...prevLogs]);
       setStatus("error");
+      setShowLogs(true);
     }
-    setShowLogs(true);
   }
 
+  const navLinks = [
+    { name: "Solutions", href: "#" },
+    { name: "Enterprise", href: "#" },
+    { name: "Developers", href: "#" },
+    { name: "Resources", href: "#" },
+    { name: "Pricing", href: "#" },
+  ];
+
   return (
-    <main
-      className="checker-background relative flex flex-col items-center min-h-screen py-12 px-4"
-      style={{ marginBottom: `${detailHeight}px` }}
-    >
-      <ThemeSwitcher />
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans selection:bg-gray-900 selection:text-white dark:selection:bg-white dark:selection:text-gray-900 overflow-x-hidden transition-colors duration-300">
       
-      {/* Hero Section */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="max-w-5xl w-full mx-auto text-center mb-16 relative z-10"
-      >
-        <div className="flex justify-center items-center gap-8 mb-8">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="relative group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
-            <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-xl">
-              <img
-                alt="React logo"
-                src={ReactSvg}
-                className="h-16 w-16 transition-transform duration-300 group-hover:rotate-180"
-                width={64}
-                height={64}
-              />
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: status === "success" ? 1 : 0, scale: status === "success" ? 1 : 0 }}
-            transition={{ duration: 0.4 }}
-            className="flex items-center gap-3"
-          >
-            <div className="h-[2px] w-12 bg-gradient-to-r from-pink-500 to-transparent"></div>
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <div className="h-[2px] w-12 bg-gradient-to-l from-pink-500 to-transparent"></div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="relative group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-pink-600 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
-            <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-xl">
-              <img
-                alt="Appwrite logo"
-                src={AppwriteSvg}
-                className="h-16 w-16 transition-transform duration-300 group-hover:rotate-180"
-                width={64}
-                height={64}
-              />
-            </div>
-          </motion.div>
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          {status === "loading" ? (
-            <div className="flex flex-col items-center gap-4">
-              <div className="relative">
-                <div className="w-12 h-12 border-4 border-gray-200 dark:border-gray-700 border-t-pink-600 rounded-full animate-spin"></div>
+      {/* Navigation Bar */}
+      <nav className="fixed w-full top-0 z-50 bg-[var(--bg-primary)]/80 backdrop-blur-md border-b border-[var(--border-subtle)] transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center gap-8">
+              <a href="/" className="flex items-center gap-2">
+                <span className="cal-heading text-2xl tracking-tighter">cal.com</span>
+              </a>
+              <div className="hidden md:flex items-center gap-6">
+                {navLinks.map((link) => (
+                  <a key={link.name} href={link.href} className="nav-link font-medium text-sm">
+                    {link.name}
+                  </a>
+                ))}
               </div>
-              <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
-                Connecting to Appwrite...
-              </p>
             </div>
-          ) : status === "success" ? (
-            <>
-              <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">
-                Connection Successful! 🎉
-              </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400">
-                Your React app is now connected to Appwrite
-              </p>
-            </>
-          ) : (
-            <>
-              <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">
-                Check Your Connection
-              </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-                Send a ping to verify the Appwrite backend connection
-              </p>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+            <div className="flex items-center gap-4">
+              <ThemeSwitcher />
+              <div className="hidden sm:flex items-center gap-3">
+                <button className="text-[var(--text-primary)] font-medium text-sm hover:text-[var(--text-muted)] transition-colors">Log In</button>
+                <button className="cal-btn cal-btn-primary rounded-full px-5 py-2">Get started</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content Area */}
+      <main className="pt-48 pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Split Hero Section */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-32">
+          
+          {/* Left Column: Text & Actions */}
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="text-left space-y-8"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--bg-muted)] border border-[var(--border-default)] text-xs font-medium text-[var(--text-secondary)]">
+              <span className="w-2 h-2 rounded-full bg-[var(--brand-accent)]"></span>
+              New: Appwrite v1.6 Integration
+            </div>
+            
+            <h1 className="cal-heading text-6xl sm:text-7xl leading-[1.05] tracking-tight">
+              The better way to <br/>
+              <span className="text-[var(--text-muted)]">connect logs.</span>
+            </h1>
+            
+            <p className="text-[var(--text-secondary)] text-lg sm:text-xl max-w-lg leading-relaxed">
+              A fully customizable monitoring dashboard for individuals, businesses, and developers building platforms where uptime matters.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <button 
                 onClick={sendPing}
-                className="cal-btn cal-btn-primary text-base px-8 py-3"
+                disabled={status === "loading"}
+                className={`cal-button-dark h-14 px-8 rounded-full text-lg font-medium group transition-all duration-300 ${status === "loading" ? "opacity-70 cursor-wait" : ""}`}
               >
-                Send a Ping
-              </motion.button>
-            </>
-          )}
-        </motion.div>
-      </motion.div>
+                 {status === "loading" ? (
+                  <div className="w-5 h-5 border-2 border-[var(--bg-primary)] border-t-transparent rounded-full animate-spin mr-3"></div>
+                ) : (
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                )}
+                {status === "loading" ? "Pinging..." : "Send a Ping"} 
+                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              </button>
+              <button className="h-14 px-8 rounded-full border border-[var(--border-default)] text-[var(--text-primary)] font-medium hover:bg-[var(--bg-muted)] transition-colors">
+                View Documentation
+              </button>
+            </div>
+            
+            <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
+               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+               No credit card required
+            </div>
+          </motion.div>
 
-      {/* Feature Cards */}
-      <motion.div 
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full mx-auto mb-12 relative z-10"
-      >
-        <div className="cal-card group">
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0">
-              <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                </svg>
+          {/* Right Column: Visual Mockup */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="relative"
+          >
+            <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-gradient-to-br from-[var(--brand-accent)]/20 to-purple-500/20 rounded-full blur-3xl opacity-50 dark:opacity-20 pointer-events-none"></div>
+            
+            <div className="visual-mockup bg-[var(--bg-primary)] border border-[var(--border-default)] p-8 relative z-10">
+              {/* Header of Mockup */}
+              <div className="flex items-center justify-between mb-8 pb-6 border-b border-[var(--border-subtle)]">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-[var(--bg-muted)] rounded-full flex items-center justify-center p-2 border border-[var(--border-default)]">
+                     <img src={AppwriteSvg} alt="Appwrite" className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-[var(--text-primary)]">Appwrite Connection</h3>
+                    <p className="text-sm text-[var(--text-muted)]">status.appwrite.io</p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                   <div className="w-8 h-8 rounded-full bg-[var(--bg-muted)] border border-[var(--border-default)]"></div>
+                   <div className="w-8 h-8 rounded-full bg-[var(--bg-muted)] border border-[var(--border-default)]"></div>
+                </div>
               </div>
+
+              {/* Body of Mockup: Status */}
+              <div className="space-y-6">
+                <div className="p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-subtle)] hover:border-[var(--brand-accent)] transition-colors cursor-pointer group">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-[var(--text-secondary)]">Response Time</span>
+                    <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                     <span className="text-2xl font-bold text-[var(--text-primary)] group-hover:text-[var(--brand-accent)] transition-colors">{status === 'success' ? '45ms' : status === 'loading' ? '...' : '--'}</span>
+                     <span className="text-xs text-[var(--text-muted)]">avg</span>
+                  </div>
+                  <div className="mt-3 w-full h-1.5 bg-[var(--border-default)] rounded-full overflow-hidden">
+                    <motion.div 
+                      className="h-full bg-[var(--brand-accent)] rounded-full"
+                      initial={{ width: "0%" }}
+                      animate={{ width: status === 'success' ? "85%" : "10%" }}
+                      transition={{ duration: 1 }}
+                    />
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-default)] shadow-sm">
+                   <div className="flex items-center gap-3 mb-3">
+                      <div className="w-8 h-8 rounded-lg bg-orange-100 dark:bg-orange-900/20 text-orange-600 flex items-center justify-center">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-[var(--text-primary)]">Backend Health</p>
+                        <p className="text-xs text-[var(--text-muted)]">Running smoothly</p>
+                      </div>
+                      <div className="cal-badge cal-badge-success">Operational</div>
+                   </div>
+                   <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] mt-2 pt-2 border-t border-[var(--border-subtle)]">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                      Last checked: Just now
+                   </div>
+                </div>
+              </div>
+
+               {/* Mockup Footer */}
+               <div className="mt-6 flex justify-between items-center text-xs text-[var(--text-muted)] px-1">
+                  <span>v1.5.8</span>
+                  <div className="flex gap-2">
+                     <div className="w-20 h-2 bg-[var(--bg-muted)] rounded-full"></div>
+                  </div>
+               </div>
+
             </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                Edit Your App
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                Edit <code className="px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-pink-600 dark:text-pink-400 font-mono text-xs">src/App.jsx</code> to start building your application with React and Appwrite.
-              </p>
-            </div>
-          </div>
+          </motion.div>
         </div>
 
-        <a
-          href="https://cloud.appwrite.io"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block"
-        >
-          <div className="cal-card group h-full">
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0">
-                <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                  </svg>
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Go to Console
-                  </h3>
-                  <svg className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                  Navigate to the Appwrite console to manage your databases, authentication, and storage.
-                </p>
-              </div>
-            </div>
-          </div>
-        </a>
+        {/* Feature/Steps Section */}
+        <div className="text-center mb-16">
+           <h2 className="cal-heading text-3xl md:text-4xl mb-4">Your all-purpose development kit</h2>
+           <p className="text-[var(--text-secondary)]">Discover a variety of our advanced features. Unlimited and free for individuals.</p>
+        </div>
 
-        <a
-          href="https://appwrite.io/docs"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block"
-        >
-          <div className="cal-card group h-full">
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0">
-                <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Explore Docs
-                  </h3>
-                  <svg className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                  Discover the full power of Appwrite by diving into our comprehensive documentation.
-                </p>
-              </div>
+        <div className="grid md:grid-cols-3 gap-8 stagger-children">
+          <motion.div whileHover={{ y: -5 }} className="cal-step-card">
+            <div className="step-number">1</div>
+            <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">Connect source</h3>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+              Edit <code className="px-1.5 py-0.5 rounded bg-[var(--bg-secondary)] border border-[var(--border-default)] font-mono text-xs">src/App.jsx</code> to start building your application.
+            </p>
+            <div className="mt-8 pt-6 border-t border-[var(--border-subtle)] flex items-center justify-between">
+               <div className="flex -space-x-2">
+                  <div className="w-8 h-8 rounded-full border-2 border-[var(--bg-primary)] bg-gray-200"></div>
+                  <div className="w-8 h-8 rounded-full border-2 border-[var(--bg-primary)] bg-gray-300"></div>
+               </div>
+               <img src={ReactSvg} className="w-6 h-6 grayscale opacity-50" />
             </div>
-          </div>
-        </a>
-      </motion.div>
+          </motion.div>
 
-      {/* Logs Panel */}
-      <aside className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-2xl backdrop-blur-lg">
-        <details open={showLogs} ref={detailsRef} className="w-full">
-          <summary className="flex items-center justify-between px-6 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-            <div className="flex items-center gap-3">
-              <svg className="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <span className="font-semibold text-gray-900 dark:text-white">Activity Logs</span>
-              {logs.length > 0 && (
-                <span className="cal-badge cal-badge-neutral animate-scaleIn">
-                  {logs.length}
+          <motion.div whileHover={{ y: -5 }} className="cal-step-card">
+            <div className="step-number">2</div>
+            <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">Set config</h3>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+              Navigate to the Appwrite console to manage your databases, authentication, and storage.
+            </p>
+            <div className="mt-8">
+               <div className="w-full bg-[var(--bg-muted)] rounded-lg p-3">
+                  <div className="w-3/4 h-2 bg-[var(--border-default)] rounded mb-2"></div>
+                  <div className="w-1/2 h-2 bg-[var(--border-default)] rounded"></div>
+               </div>
+            </div>
+          </motion.div>
+
+          <motion.div whileHover={{ y: -5 }} className="cal-step-card">
+             <div className="step-number">3</div>
+            <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">Deploy tools</h3>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+              Discover the full power of Appwrite by diving into our comprehensive documentation.
+            </p>
+            <div className="mt-8 flex justify-end">
+               <div className="w-10 h-10 rounded-full bg-[var(--brand-primary)] flex items-center justify-center text-white">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+               </div>
+            </div>
+          </motion.div>
+        </div>
+
+      </main>
+
+      {/* Activity Logs Drawer - Fixed Bottom */}
+      <AnimatePresence>
+        {(showLogs || logs.length > 0) && (
+          <motion.div
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed bottom-0 left-0 right-0 bg-[var(--bg-primary)] border-t border-[var(--border-default)] shadow-2xl z-40 max-h-[40vh] flex flex-col"
+          >
+            <div 
+              className="flex items-center justify-between px-6 py-3 border-b border-[var(--border-default)] bg-[var(--bg-secondary)] cursor-pointer hover:bg-[var(--bg-muted)] transition-colors"
+              onClick={() => setShowLogs(!showLogs)}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-[var(--success)] animate-pulse"></div>
+                <h3 className="font-semibold text-sm text-[var(--text-primary)]">Activity Logs</h3>
+                <span className="px-2 py-0.5 rounded-full bg-[var(--bg-muted)] border border-[var(--border-default)] text-xs text-[var(--text-muted)] font-mono">
+                  {logs.length} events
                 </span>
-              )}
-            </div>
-            <svg className="w-5 h-5 text-gray-400 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </summary>
-
-          <div className="border-t border-gray-200 dark:border-gray-800">
-            <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr]">
-              {/* Project Info Sidebar */}
-              <div className="border-r border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
-                <div className="px-6 py-3 border-b border-gray-200 dark:border-gray-800">
-                  <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Project Configuration
-                  </h4>
-                </div>
-                <div className="p-6 space-y-4">
-                  <div>
-                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 block mb-1">
-                      Endpoint
-                    </label>
-                    <p className="text-sm font-mono text-gray-900 dark:text-white break-all">
-                      http://localhost/v1
-                    </p>
-                  </div>
-                  <div>
-                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 block mb-1">
-                      Project ID
-                    </label>
-                    <p className="text-sm font-mono text-gray-900 dark:text-white">
-                      web-tools
-                    </p>
-                  </div>
-                  <div>
-                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 block mb-1">
-                      Project Name
-                    </label>
-                    <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                      Web Tools
-                    </p>
-                  </div>
-                </div>
               </div>
+              <button className="text-[var(--text-muted)] hover:text-[var(--text-primary)]">
+                {showLogs ? (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                ) : (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path></svg>
+                )}
+              </button>
+            </div>
 
-              {/* Logs Table */}
-              <div className="overflow-auto max-h-80">
-                <table className="w-full">
-                  <thead className="bg-gray-50 dark:bg-gray-900/50 sticky top-0">
-                    <tr className="border-b border-gray-200 dark:border-gray-800">
-                      {logs.length > 0 ? (
-                        <>
-                          <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Timestamp
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Status
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Method
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden lg:table-cell">
-                            Path
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden xl:table-cell">
-                            Response
-                          </th>
-                        </>
-                      ) : (
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                          No Activity Yet
-                        </th>
-                      )}
+            {showLogs && (
+              <div className="overflow-auto p-0 scroll-smooth">
+                <table className="w-full text-left border-collapse">
+                  <thead className="bg-[var(--bg-subtle)] sticky top-0 z-10">
+                    <tr>
+                      <th className="px-6 py-3 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider border-b border-[var(--border-default)]">Time</th>
+                      <th className="px-6 py-3 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider border-b border-[var(--border-default)]">Method</th>
+                      <th className="px-6 py-3 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider border-b border-[var(--border-default)]">Status</th>
+                      <th className="px-6 py-3 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider border-b border-[var(--border-default)]">Path</th>
+                      <th className="px-6 py-3 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider border-b border-[var(--border-default)]">Response</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
-                    {logs.length > 0 ? (
-                      logs.map((log, index) => (
-                        <motion.tr
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.3, delay: index * 0.05 }}
-                          className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-                        >
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-600 dark:text-gray-400">
-                            {log.date.toLocaleString("en-US", {
-                              month: "short",
-                              day: "numeric",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                              second: "2-digit",
-                            })}
-                          </td>
-                          <td className="px-4 py-4 whitespace-nowrap">
-                            {log.status >= 400 ? (
-                              <span className="cal-badge cal-badge-error">
-                                {log.status}
-                              </span>
-                            ) : (
-                              <span className="cal-badge cal-badge-success">
-                                {log.status}
-                              </span>
-                            )}
-                          </td>
-                          <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                  <tbody className="divide-y divide-[var(--border-default)]">
+                    {logs.map((log, index) => (
+                      <tr key={index} className="hover:bg-[var(--bg-subtle)] transition-colors group">
+                        <td className="px-6 py-3 text-sm text-[var(--text-secondary)] font-mono whitespace-nowrap">
+                          {log.date.toLocaleTimeString()}
+                        </td>
+                        <td className="px-6 py-3 text-sm">
+                          <span className="px-2 py-1 rounded-md bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs font-bold font-mono">
                             {log.method}
-                          </td>
-                          <td className="px-4 py-4 whitespace-nowrap text-sm font-mono text-gray-600 dark:text-gray-400 hidden lg:table-cell">
-                            {log.path}
-                          </td>
-                          <td className="px-4 py-4 text-sm font-mono text-gray-600 dark:text-gray-400 max-w-md truncate hidden xl:table-cell">
-                            {log.response}
-                          </td>
-                        </motion.tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td className="px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400 italic">
-                          No logs to display. Send a ping to see activity here.
+                          </span>
+                        </td>
+                        <td className="px-6 py-3 text-sm">
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                            log.status >= 200 && log.status < 300 
+                              ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400" 
+                              : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+                          }`}>
+                            {log.status === 200 ? '200 OK' : log.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-3 text-sm text-[var(--text-primary)] font-mono">{log.path}</td>
+                        <td className="px-6 py-3 text-sm text-[var(--text-secondary)] font-mono max-w-xs truncate group-hover:whitespace-normal group-hover:break-words group-hover:max-w-none transition-all">
+                          {log.response}
                         </td>
                       </tr>
-                    )}
+                    ))}
                   </tbody>
                 </table>
               </div>
-            </div>
-          </div>
-        </details>
-      </aside>
-    </main>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 

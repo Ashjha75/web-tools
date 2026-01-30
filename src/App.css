@@ -3,51 +3,27 @@
 
 /* Cal.com inspired color system */
 :root {
-  /* Light Theme - Cal.com Style */
+  /* Light Theme */
   --bg-primary: #ffffff;
   --bg-secondary: #f9fafb;
-  --bg-muted: #f3f4f6;
-  --bg-subtle: #f8f9fa;
   --text-primary: #111827;
-  --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
+  --text-secondary: #4b5563;
+  --text-tertiary: #9ca3af;
   --border-default: #e5e7eb;
-  --border-subtle: #f3f4f6;
-  --brand-primary: #292929;
-  --brand-accent: #4f46e5;
-  --brand-pink: #fd366e;
-  --brand-blue: #3b82f6;
-  --success: #10b981;
-  --error: #ef4444;
-  --warning: #f59e0b;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --brand-black: #111827;
+  --appwrite-pink: #fd366e;
+  --react-blue: #61dafb;
 }
 
 .dark {
-  /* Dark Theme - Cal.com Style */
-  --bg-primary: #111827;
-  --bg-secondary: #1f2937;
-  --bg-muted: #374151;
-  --bg-subtle: #1a1f2e;
-  --text-primary: #f9fafb;
-  --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
-  --border-default: #374151;
-  --border-subtle: #1f2937;
-  --brand-primary: #ffffff;
-  --brand-accent: #6366f1;
-  --brand-pink: #f472b6;
-  --brand-blue: #60a5fa;
-  --success: #34d399;
-  --error: #f87171;
-  --warning: #fbbf24;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+  /* Dark Theme */
+  --bg-primary: #020617;
+  --bg-secondary: #0f172a;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --border-default: #1e293b;
+  --brand-black: #ffffff; 
 }
 
 * {
@@ -56,254 +32,102 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.6;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-/* Cal.com Style Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideInFromLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-.animate-fadeInUp {
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-.animate-slideIn {
-  animation: slideInFromLeft 0.5s ease-out forwards;
-}
-
-.animate-scaleIn {
-  animation: scaleIn 0.4s ease-out forwards;
-}
-
-/* Stagger children animations */
-.stagger-children > * {
-  opacity: 0;
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
-.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
-.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
-.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
-
-summary::-webkit-details-marker {
-  display: none;
-}
-
-.checker-background {
-  background-color: var(--bg-secondary);
-  position: relative;
-}
-
-.checker-background::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-image: 
-    radial-gradient(circle at 1px 1px, var(--border-default) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: linear-gradient(to bottom, transparent, black 100px, black calc(100% - 100px), transparent);
-  opacity: 0.4;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* Custom Scrollbar - Cal.com style */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border-default);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
-}
-
-/* Cal.com Style Cards */
-.cal-card {
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border-default);
-  border-radius: 12px;
-  padding: 24px;
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-sm);
-}
-
-.cal-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-  border-color: var(--border-subtle);
-}
-
-/* Cal.com Style Buttons */
-.cal-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 500;
-  border-radius: 8px;
-  padding: 10px 18px;
-  transition: all 0.15s ease;
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 20px;
-  border: none;
-  outline: none;
-}
-
-.cal-btn-primary {
-  background-color: var(--brand-primary);
-  color: white;
-}
-
-.cal-btn-primary:hover {
-  background-color: #000000;
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
-
-.cal-btn-secondary {
-  background-color: var(--bg-muted);
+/* Typography matching Cal.com */
+.cal-heading {
+  font-family: 'Cal Sans', 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
-  border: 1px solid var(--border-default);
 }
 
-.cal-btn-secondary:hover {
-  background-color: var(--bg-subtle);
-  border-color: var(--brand-primary);
-}
-
-/* Badge styles */
-.cal-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
-}
-
-.cal-badge-success {
-  background-color: rgba(16, 185, 129, 0.1);
-  color: var(--success);
-}
-
-.cal-badge-error {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: var(--error);
-}
-
-.cal-badge-neutral {
-  background-color: var(--bg-muted);
+.cal-text {
+  font-family: 'Inter', sans-serif;
   color: var(--text-secondary);
 }
 
-/* Input styles */
-.cal-input {
-  width: 100%;
-  padding: 10px 14px;
+/* Button matching Cal.com "Get started" */
+.cal-button-dark {
+  background-color: var(--brand-black);
+  color: var(--bg-primary);
+  padding: 12px 24px;
+  border-radius: 9999px; /* Pill shape often used or slightly rounded. The ref has rounded-full for checks but rounded-md/lg for main buttons. Let's go with rounded-full for 'Get started' style buttons if mimicking the header button, or rounded-lg for the hero. Ref image hero button is rounded-full (pill). */
+  font-weight: 500;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  border: 1px solid var(--brand-black);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cal-button-dark:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  opacity: 0.9;
+}
+
+/* Card matching "Connect your calendar" */
+.cal-step-card {
+  background: var(--bg-primary);
   border: 1px solid var(--border-default);
-  border-radius: 8px;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  font-size: 14px;
+  border-radius: 12px;
+  padding: 24px;
+  height: 100%;
   transition: all 0.2s ease;
 }
 
-.cal-input:focus {
-  outline: none;
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(41, 41, 41, 0.1);
+.cal-step-card:hover {
+  border-color: var(--text-tertiary);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
 }
 
-.dark .cal-input:focus {
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+.step-number {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-default);
 }
 
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, var(--brand-primary), var(--brand-accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* Navbar */
+.nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color 0.2s;
 }
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+/* Visual Mockup Container */
+.visual-mockup {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+/* Grid Background - subtle */
+.bg-grid {
+  background-size: 40px 40px;
+  background-image: radial-gradient(circle, var(--border-default) 1px, transparent 1px);
+  mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+}
+
