@@ -33,8 +33,11 @@ function App() {
       const errorMessage = err.message || "Failed to load projects";
       setError(errorMessage);
       setStatus("error");
-      toast.error(errorMessage);
       console.error("Error fetching projects:", err);
+      // Don't show toast error on initial load if backend is unavailable
+      if (user) {
+        toast.error(errorMessage);
+      }
     }
   }
 
@@ -42,6 +45,9 @@ function App() {
   useEffect(() => {
     if (user) {
       fetchProjects();
+    } else {
+      // Set status to success even without user to show the UI
+      setStatus("idle");
     }
   }, [user]);
 

@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }) => {
       const currentUser = await account.get();
       setUser(currentUser);
     } catch (error) {
+      console.log("Auth check failed:", error.message);
       setUser(null);
     } finally {
       setLoading(false);
