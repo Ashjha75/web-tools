@@ -69,7 +69,9 @@ export default function SignUp() {
                 Full Name <span className="text-[var(--accent-pink)]">*</span>
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-tertiary)] pointer-events-none" />
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <User className="w-4 h-4 text-[var(--text-tertiary)]" />
+                </div>
                 <input
                   type="text"
                   name="name"
@@ -78,8 +80,7 @@ export default function SignUp() {
                   onChange={(e) => setName(e.target.value)}
                   placeholder="John Doe"
                   required
-                  className="input w-full h-12"
-                  style={{ paddingLeft: '40px' }}
+                  className="input w-full h-12 pl-12 pr-4"
                 />
               </div>
             </div>
@@ -90,7 +91,9 @@ export default function SignUp() {
                 Email Address <span className="text-[var(--accent-pink)]">*</span>
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-tertiary)] pointer-events-none" />
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Mail className="w-4 h-4 text-[var(--text-tertiary)]" />
+                </div>
                 <input
                   type="email"
                   name="email"
@@ -99,8 +102,7 @@ export default function SignUp() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
                   required
-                  className="input w-full h-12"
-                  style={{ paddingLeft: '40px' }}
+                  className="input w-full h-12 pl-12 pr-4"
                 />
               </div>
             </div>
@@ -111,7 +113,9 @@ export default function SignUp() {
                 Password <span className="text-[var(--accent-pink)]">*</span>
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-tertiary)] pointer-events-none" />
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Lock className="w-4 h-4 text-[var(--text-tertiary)]" />
+                </div>
                 <input
                   type={showPassword ? "text" : "password"}
                   name="new-password"
@@ -121,13 +125,12 @@ export default function SignUp() {
                   placeholder="Min 8 characters"
                   required
                   minLength={8}
-                  className="input w-full h-12"
-                  style={{ paddingLeft: '40px', paddingRight: '40px' }}
+                  className="input w-full h-12 pl-12 pr-12"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
