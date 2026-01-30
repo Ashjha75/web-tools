@@ -14,7 +14,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter basename="/web-tools">
+    <BrowserRouter>
       <AuthProvider>
         <Toaster
           position="top-center"
