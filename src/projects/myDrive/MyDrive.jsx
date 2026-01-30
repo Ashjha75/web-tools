@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { HardDrive, RefreshCw, ArrowLeft } from "lucide-react";
+import { HardDrive, RefreshCw, ArrowLeft, FileText, Database, CheckCircle } from "lucide-react";
 import FileUpload from "./components/FileUpload";
 import FileList from "./components/FileList";
 import fileService from "./services/fileService";
@@ -98,40 +98,40 @@ export default function MyDrive() {
         >
           <div className="card p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[var(--accent-pink)] bg-opacity-10 flex items-center justify-center">
-                <HardDrive className="w-6 h-6 text-[var(--accent-pink)]" />
+              <div className="w-14 h-14 rounded-2xl bg-[var(--accent-pink)] bg-opacity-10 flex items-center justify-center flex-shrink-0">
+                <FileText className="w-7 h-7 text-[var(--accent-pink)]" />
               </div>
-              <div>
-                <p className="text-2xl font-bold text-[var(--text-primary)]">{files.length}</p>
-                <p className="text-sm text-[var(--text-secondary)]">Total Files</p>
+              <div className="flex-1">
+                <p className="text-3xl font-bold text-[var(--text-primary)]">{files.length}</p>
+                <p className="text-sm text-[var(--text-secondary)] mt-1">Total Files</p>
               </div>
             </div>
           </div>
 
           <div className="card p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[var(--accent-pink)] bg-opacity-10 flex items-center justify-center">
-                <span className="text-2xl">📊</span>
+              <div className="w-14 h-14 rounded-2xl bg-[var(--accent-pink)] bg-opacity-10 flex items-center justify-center flex-shrink-0">
+                <Database className="w-7 h-7 text-[var(--accent-pink)]" />
               </div>
-              <div>
-                <p className="text-2xl font-bold text-[var(--text-primary)]">
+              <div className="flex-1">
+                <p className="text-3xl font-bold text-[var(--text-primary)]">
                   {fileService.formatFileSize(
                     files.reduce((acc, file) => acc + (file.sizeOriginal || 0), 0)
                   )}
                 </p>
-                <p className="text-sm text-[var(--text-secondary)]">Total Size</p>
+                <p className="text-sm text-[var(--text-secondary)] mt-1">Total Size</p>
               </div>
             </div>
           </div>
 
           <div className="card p-6 sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                <span className="text-2xl">🚀</span>
+              <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-7 h-7 text-green-600" />
               </div>
-              <div>
-                <p className="text-2xl font-bold text-[var(--text-primary)]">Active</p>
-                <p className="text-sm text-[var(--text-secondary)]">Storage Status</p>
+              <div className="flex-1">
+                <p className="text-3xl font-bold text-green-600">Active</p>
+                <p className="text-sm text-[var(--text-secondary)] mt-1">Storage Status</p>
               </div>
             </div>
           </div>

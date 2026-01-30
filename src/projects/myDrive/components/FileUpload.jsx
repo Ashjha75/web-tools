@@ -120,12 +120,12 @@ export default function FileUpload({ onFileUploaded }) {
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
         className={`
-          relative rounded-3xl border-2 border-dashed p-8 sm:p-12 text-center cursor-pointer
-          transition-all duration-200 card
+          relative rounded-3xl border-2 border-dashed p-12 sm:p-16 text-center cursor-pointer
+          transition-all duration-300 card
           ${
             isDragging
-              ? "border-[var(--accent-pink)] bg-pink-50"
-              : "border-[var(--border-light)] hover:border-[var(--accent-pink)] hover:bg-gray-50"
+              ? "border-[var(--accent-pink)] bg-pink-50 scale-105"
+              : "border-[var(--border-light)] hover:border-[var(--accent-pink)] hover:bg-gray-50 hover:shadow-lg"
           }
         `}
       >
@@ -138,14 +138,14 @@ export default function FileUpload({ onFileUploaded }) {
         />
         <motion.div
           initial={{ scale: 1 }}
-          animate={{ scale: isDragging ? 1.05 : 1 }}
+          animate={{ scale: isDragging ? 1.1 : 1 }}
           className="flex flex-col items-center gap-4"
         >
-          <div className="w-16 h-16 rounded-full bg-[var(--accent-pink)] flex items-center justify-center shadow-lg">
-            <FileUp className="w-8 h-8 text-white" />
+          <div className="w-20 h-20 rounded-2xl bg-[var(--accent-pink)] flex items-center justify-center shadow-xl">
+            <FileUp className="w-10 h-10 text-white" />
           </div>
           <div>
-            <p className="text-lg font-semibold text-[var(--text-primary)] mb-1">
+            <p className="text-xl font-bold text-[var(--text-primary)] mb-2">
               {isDragging ? "Drop files here" : "Click to upload or drag and drop"}
             </p>
             <p className="text-sm text-[var(--text-secondary)]">
@@ -170,11 +170,11 @@ export default function FileUpload({ onFileUploaded }) {
             </button>
           </div>
 
-          <div className="space-y-3 max-h-64 overflow-y-auto">
+          <div className="space-y-3 max-h-80 overflow-y-auto">
             {selectedFiles.map((fileData) => (
               <div
                 key={fileData.id}
-                className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl"
+                className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-200"
               >
                 <span className="text-2xl flex-shrink-0">
                   {fileService.getFileIcon(fileData.file.type)}
