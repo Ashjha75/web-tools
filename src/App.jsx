@@ -42,23 +42,23 @@ function App() {
   return (
     <div className="min-h-screen bg-[var(--bg-main)] w-full">
       {/* Hero Section with Tiles Background */}
-      <section className="relative w-full overflow-hidden min-h-[600px] sm:min-h-[700px] flex items-center">
+      <section className="relative w-full min-h-[600px] sm:min-h-[700px] flex items-center justify-center overflow-hidden">
         {/* Tiles Background */}
-        <div className="absolute inset-0 w-full h-full">
-          <Tiles rows={50} cols={8} tileSize="sm" className="sm:hidden" />
-          <Tiles rows={50} cols={12} tileSize="md" className="hidden sm:block" />
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <Tiles rows={60} cols={20} tileSize="sm" className="sm:hidden" />
+          <Tiles rows={100} cols={25} tileSize="md" className="hidden sm:flex" />
         </div>
         
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--bg-main)]/50 to-[var(--bg-main)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--bg-main)]/50 to-[var(--bg-main)] pointer-events-none z-10" />
         
         {/* Hero Content */}
-        <div className="relative z-10 w-full px-4 sm:px-6 py-16 sm:py-20 md:py-24">
+        <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-4xl mx-auto text-center w-full"
+            className="max-w-4xl mx-auto text-center"
           >
             {/* Badge */}
             <motion.div
@@ -78,7 +78,7 @@ function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight px-2 sm:px-0"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
             >
               Attract top talent{" "}
               <span className="text-[var(--text-secondary)]">faster</span>
@@ -89,7 +89,7 @@ function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] mb-8 sm:mb-10 max-w-2xl mx-auto px-4 sm:px-0"
+              className="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] mb-8 sm:mb-10 max-w-2xl mx-auto"
             >
               Stop playing email tag on interviews and make scheduling a
               competitive advantage.
@@ -100,7 +100,7 @@ function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center px-4 sm:px-0"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center"
             >
               <button
                 onClick={sendPing}

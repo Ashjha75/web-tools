@@ -1,9 +1,15 @@
 import { motion } from "framer-motion";
 
-const tileSizes = {
+const tileDimensions = {
   sm: "w-8 h-8",
   md: "w-9 h-9 md:w-12 md:h-12",
   lg: "w-12 h-12 md:w-16 md:h-16",
+};
+
+const tileWidths = {
+  sm: "w-8",
+  md: "w-9 md:w-12",
+  lg: "w-12 md:w-16",
 };
 
 export function Tiles({
@@ -18,7 +24,7 @@ export function Tiles({
 
   return (
     <div 
-      className={`relative z-0 flex w-full h-full ${className}`}
+      className={`absolute inset-0 flex justify-center items-start ${className}`}
       style={{ 
         "--tile": "rgba(227, 208, 254, 0.15)",
       }}
@@ -26,7 +32,7 @@ export function Tiles({
       {rowsArray.map((_, i) => (
         <motion.div
           key={`row-${i}`}
-          className={`${tileSizes[tileSize]} border-l border-gray-200 relative ${tileClassName}`}
+          className={`${tileWidths[tileSize]} border-l border-gray-200 relative ${tileClassName}`}
         >
           {colsArray.map((_, j) => (
             <motion.div
@@ -38,7 +44,7 @@ export function Tiles({
                 transition: { duration: 2 }
               }}
               key={`col-${j}`}
-              className={`${tileSizes[tileSize]} border-r border-t border-gray-200 relative ${tileClassName}`}
+              className={`${tileDimensions[tileSize]} border-r border-t border-gray-200 relative ${tileClassName}`}
             />
           ))}
         </motion.div>
