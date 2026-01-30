@@ -2,52 +2,43 @@
 
 class GoogleDriveService {
   constructor() {
-    this.isInitialized = false;
-    this.isSignedIn = false;
     this.accessToken = null;
+    this.tokenClient = null;
   }
 
-  // Initialize Google API
+  // Initialize Google Identity Services
   async initClient() {
     try {
-      if (this.isInitialized) return true;
+      if (this.tokenClient) return true;
 
-      await new Promise((resolve) => {
-        gapi.load("client:auth2", resolve);
-      });
-
-      await gapi.client.init({
-        apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
-        clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-        discoveryDocs: [import.meta.env.VITE_GOOGLE_DISCOVERY_DOCS],
-        scope: import.meta.env.VITE_GOOGLE_SCOPES,
-      });
-
-      // Listen for sign-in state changes
-      gapi.auth2.getAuthInstance().isSignedIn.listen((isSignedIn) => {
-        this.isSignedIn = isSignedIn;
-        if (isSignedIn) {
-          this.accessToken = gapi.auth2
-            .getAuthInstance()
-            .currentUser.get()
-            .getAuthResponse().access_token;
+      // Load the Google Identity Services library
+      await new Promise((resolve, reject) => {
+        if (window.google?.accounts?.oauth2) {
+          resolve();
+        } else {
+          const script = document.createElement("script");
+          script.src = "https://accounts.google.com/gsi/client";
+          script.onload = resolve;
+          script.onerror = reject;
+          document.body.appendChild(script);
         }
       });
 
-      // Check if already signed in
-      this.isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-      if (this.isSignedIn) {
-        this.accessToken = gapi.auth2
-          .getAuthInstance()
-          .currentUser.get()
-          .getAuthResponse().access_token;
-      }
+      // Initialize token client
+      this.tokenClient = window.google.accounts.oauth2.initTokenClient({
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+        scope: import.meta.env.VITE_GOOGLE_SCOPES,
+        callback: (response) => {
+          if (response.access_token) {
+            this.accessToken = response.access_token;
+          }
+        },
+      });
 
-      this.isInitialized = true;
-      console.log("Google Drive API initialized successfully");
+      console.log("Google Identity Services initialized successfully");
       return true;
     } catch (error) {
-      console.error("Error initializing Google Drive API:", error);
+      console.error("Error initializing Google Identity Services:", error);
       throw error;
     }
   }
@@ -55,18 +46,21 @@ class GoogleDriveService {
   // Sign in to Google
   async signIn() {
     try {
-      if (!this.isInitialized) {
+      if (!this.tokenClient) {
         await this.initClient();
       }
 
-      const authInstance = gapi.auth2.getAuthInstance();
-      await authInstance.signIn();
-      this.isSignedIn = true;
-      this.accessToken = authInstance
-        .currentUser.get()
-        .getAuthResponse().access_token;
-
-      return true;
+      return new Promise((resolve, reject) => {
+        this.tokenClient.callback = (response) => {
+          if (response.error) {
+            reject(response);
+          } else {
+            this.accessToken = response.access_token;
+            resolve(true);
+          }
+        };
+        this.tokenClient.requestAccessToken({ prompt: "consent" });
+      });
     } catch (error) {
       console.error("Error signing in:", error);
       throw error;
@@ -76,13 +70,10 @@ class GoogleDriveService {
   // Sign out from Google
   async signOut() {
     try {
-      if (!this.isInitialized) return;
-
-      const authInstance = gapi.auth2.getAuthInstance();
-      await authInstance.signOut();
-      this.isSignedIn = false;
-      this.accessToken = null;
-
+      if (this.accessToken) {
+        await window.google.accounts.oauth2.revoke(this.accessToken);
+        this.accessToken = null;
+      }
       return true;
     } catch (error) {
       console.error("Error signing out:", error);
@@ -90,22 +81,32 @@ class GoogleDriveService {
     }
   }
 
+  // Check if signed in
+  isSignedIn() {
+    return !!this.accessToken;
+  }
+
   // Get user profile
   async getUserProfile() {
     try {
-      if (!this.isSignedIn) {
+      if (!this.accessToken) {
         throw new Error("User not signed in");
       }
 
-      const user = gapi.auth2.getAuthInstance().currentUser.get();
-      const profile = user.getBasicProfile();
+      const response = await fetch(
+        "https://www.googleapis.com/oauth2/v2/userinfo",
+        {
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+          },
+        }
+      );
 
-      return {
-        id: profile.getId(),
-        name: profile.getName(),
-        email: profile.getEmail(),
-        imageUrl: profile.getImageUrl(),
-      };
+      if (!response.ok) {
+        throw new Error("Failed to get user profile");
+      }
+
+      return await response.json();
     } catch (error) {
       console.error("Error getting user profile:", error);
       throw error;
@@ -115,23 +116,27 @@ class GoogleDriveService {
   // List files from Google Drive
   async listFiles(pageSize = 100, pageToken = null) {
     try {
-      if (!this.isSignedIn) {
+      if (!this.accessToken) {
         throw new Error("User not signed in");
       }
 
-      const params = {
-        pageSize: pageSize,
-        fields:
-          "nextPageToken, files(id, name, mimeType, size, createdTime, modifiedTime, thumbnailLink, webViewLink, webContentLink, iconLink, parents)",
-        orderBy: "modifiedTime desc",
-      };
+      let url = `https://www.googleapis.com/drive/v3/files?pageSize=${pageSize}&fields=nextPageToken,files(id,name,mimeType,size,createdTime,modifiedTime,thumbnailLink,webViewLink,webContentLink,iconLink,parents)&orderBy=modifiedTime desc`;
 
       if (pageToken) {
-        params.pageToken = pageToken;
+        url += `&pageToken=${pageToken}`;
       }
 
-      const response = await gapi.client.drive.files.list(params);
-      return response.result;
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to list files");
+      }
+
+      return await response.json();
     } catch (error) {
       console.error("Error listing files:", error);
       throw error;
@@ -141,19 +146,26 @@ class GoogleDriveService {
   // Search files
   async searchFiles(query) {
     try {
-      if (!this.isSignedIn) {
+      if (!this.accessToken) {
         throw new Error("User not signed in");
       }
 
-      const response = await gapi.client.drive.files.list({
-        q: `name contains '${query}' and trashed=false`,
-        pageSize: 50,
-        fields:
-          "files(id, name, mimeType, size, createdTime, modifiedTime, thumbnailLink, webViewLink, webContentLink, iconLink)",
-        orderBy: "modifiedTime desc",
+      const url = `https://www.googleapis.com/drive/v3/files?q=name contains '${encodeURIComponent(
+        query
+      )}' and trashed=false&pageSize=50&fields=files(id,name,mimeType,size,createdTime,modifiedTime,thumbnailLink,webViewLink,webContentLink,iconLink)&orderBy=modifiedTime desc`;
+
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
       });
 
-      return response.result.files;
+      if (!response.ok) {
+        throw new Error("Failed to search files");
+      }
+
+      const result = await response.json();
+      return result.files;
     } catch (error) {
       console.error("Error searching files:", error);
       throw error;
@@ -163,17 +175,24 @@ class GoogleDriveService {
   // Get file by ID
   async getFile(fileId) {
     try {
-      if (!this.isSignedIn) {
+      if (!this.accessToken) {
         throw new Error("User not signed in");
       }
 
-      const response = await gapi.client.drive.files.get({
-        fileId: fileId,
-        fields:
-          "id, name, mimeType, size, createdTime, modifiedTime, thumbnailLink, webViewLink, webContentLink, iconLink, description",
-      });
+      const response = await fetch(
+        `https://www.googleapis.com/drive/v3/files/${fileId}?fields=id,name,mimeType,size,createdTime,modifiedTime,thumbnailLink,webViewLink,webContentLink,iconLink,description`,
+        {
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+          },
+        }
+      );
 
-      return response.result;
+      if (!response.ok) {
+        throw new Error("Failed to get file");
+      }
+
+      return await response.json();
     } catch (error) {
       console.error("Error getting file:", error);
       throw error;
@@ -183,7 +202,7 @@ class GoogleDriveService {
   // Download file
   async downloadFile(fileId, fileName) {
     try {
-      if (!this.isSignedIn || !this.accessToken) {
+      if (!this.accessToken) {
         throw new Error("User not signed in");
       }
 
@@ -220,7 +239,7 @@ class GoogleDriveService {
   // Create folder
   async createFolder(folderName, parentId = null) {
     try {
-      if (!this.isSignedIn) {
+      if (!this.accessToken) {
         throw new Error("User not signed in");
       }
 
@@ -233,12 +252,23 @@ class GoogleDriveService {
         fileMetadata.parents = [parentId];
       }
 
-      const response = await gapi.client.drive.files.create({
-        resource: fileMetadata,
-        fields: "id, name",
-      });
+      const response = await fetch(
+        "https://www.googleapis.com/drive/v3/files?fields=id,name",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(fileMetadata),
+        }
+      );
 
-      return response.result;
+      if (!response.ok) {
+        throw new Error("Failed to create folder");
+      }
+
+      return await response.json();
     } catch (error) {
       console.error("Error creating folder:", error);
       throw error;
@@ -248,7 +278,7 @@ class GoogleDriveService {
   // Upload file
   async uploadFile(file, parentId = null) {
     try {
-      if (!this.isSignedIn || !this.accessToken) {
+      if (!this.accessToken) {
         throw new Error("User not signed in");
       }
 
@@ -293,13 +323,23 @@ class GoogleDriveService {
   // Delete file
   async deleteFile(fileId) {
     try {
-      if (!this.isSignedIn) {
+      if (!this.accessToken) {
         throw new Error("User not signed in");
       }
 
-      await gapi.client.drive.files.delete({
-        fileId: fileId,
-      });
+      const response = await fetch(
+        `https://www.googleapis.com/drive/v3/files/${fileId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete file");
+      }
 
       return true;
     } catch (error) {
@@ -311,15 +351,25 @@ class GoogleDriveService {
   // Get storage quota
   async getStorageQuota() {
     try {
-      if (!this.isSignedIn) {
+      if (!this.accessToken) {
         throw new Error("User not signed in");
       }
 
-      const response = await gapi.client.drive.about.get({
-        fields: "storageQuota, user",
-      });
+      const response = await fetch(
+        "https://www.googleapis.com/drive/v3/about?fields=storageQuota,user",
+        {
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+          },
+        }
+      );
 
-      return response.result.storageQuota;
+      if (!response.ok) {
+        throw new Error("Failed to get storage quota");
+      }
+
+      const result = await response.json();
+      return result.storageQuota;
     } catch (error) {
       console.error("Error getting storage quota:", error);
       throw error;

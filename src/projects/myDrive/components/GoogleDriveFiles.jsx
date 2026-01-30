@@ -30,12 +30,7 @@ function GoogleDriveFiles() {
   const initGoogleDrive = async () => {
     try {
       await googleDriveService.initClient();
-      const signedIn = googleDriveService.isSignedIn;
-      setIsSignedIn(signedIn);
-
-      if (signedIn) {
-        await loadUserData();
-      }
+      setIsSignedIn(googleDriveService.isSignedIn());
     } catch (error) {
       console.error("Failed to initialize Google Drive:", error);
       toast.error("Failed to initialize Google Drive");
@@ -79,8 +74,8 @@ function GoogleDriveFiles() {
     try {
       await googleDriveService.signIn();
       setIsSignedIn(true);
-      await loadUserData();
       toast.success("Signed in to Google Drive successfully!");
+      await loadUserData();
     } catch (error) {
       console.error("Failed to sign in:", error);
       toast.error("Failed to sign in to Google Drive");
