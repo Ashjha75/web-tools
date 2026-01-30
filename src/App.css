@@ -436,6 +436,16 @@ p {
 
 .input::placeholder {
   color: var(--text-tertiary);
+  opacity: 0.6;
+}
+
+/* Input with icons - ensure proper spacing */
+.input-with-icon {
+  padding-left: 48px !important;
+}
+
+.input-with-icon-right {
+  padding-right: 48px !important;
 }
 
 /* ===== BADGE STYLES ===== */

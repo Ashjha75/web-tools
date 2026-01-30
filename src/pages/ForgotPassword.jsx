@@ -101,7 +101,7 @@ export default function ForgotPassword() {
                 Email Address <span className="text-[var(--accent-pink)]">*</span>
               </label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-tertiary)]" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-tertiary)] pointer-events-none" />
                 <input
                   type="email"
                   name="email"
@@ -110,7 +110,8 @@ export default function ForgotPassword() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
                   required
-                  className="input w-full pl-12 pr-4 h-12"
+                  className="input w-full h-12"
+                  style={{ paddingLeft: '40px' }}
                 />
               </div>
             </div>

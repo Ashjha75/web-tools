@@ -36,25 +36,6 @@ function App() {
       console.error("Error fetching projects:", err);
     }
   }
-    setError(null);
-    
-    try {
-      const response = await databases.listDocuments(
-        DATABASE_ID,
-        COLLECTION_ID
-      );
-      setProjects(response.documents);
-      setStatus("success");
-    } catch (err) {
-      console.error("Error fetching projects:", err);
-      setError(
-        err instanceof AppwriteException
-          ? err.message
-          : "Failed to load projects. Please try again."
-      );
-      setStatus("error");
-    }
-  }
 
   // Fetch projects on component mount
   useEffect(() => {
