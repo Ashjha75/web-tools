@@ -3,19 +3,17 @@
 
 /* Root CSS Variables for Theming */
 :root {
-  /* Light Theme Colors */
+  /* Light Theme Colors - White & Black Only */
   --bg-primary: #ffffff;
-  --bg-secondary: #f9fafb;
-  --bg-tertiary: #f3f4f6;
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
-  --text-tertiary: #9ca3af;
-  --border-primary: #e5e7eb;
-  --border-secondary: #d1d5db;
-  --accent-primary: #fd366e;
-  --accent-secondary: #f02e65;
-  --success: #10b981;
-  --error: #ef4444;
+  --bg-secondary: #fafafa;
+  --bg-tertiary: #f5f5f5;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --text-tertiary: #666666;
+  --border-primary: #e0e0e0;
+  --border-secondary: #d0d0d0;
+  --appwrite-pink: #fd366e;
+  --react-blue: #61dafb;
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
@@ -23,19 +21,17 @@
 }
 
 .dark {
-  /* Dark Theme Colors */
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-tertiary: #334155;
-  --text-primary: #f1f5f9;
-  --text-secondary: #cbd5e1;
-  --text-tertiary: #94a3b8;
-  --border-primary: #334155;
-  --border-secondary: #475569;
-  --accent-primary: #ff4081;
-  --accent-secondary: #f50057;
-  --success: #10b981;
-  --error: #f87171;
+  /* Dark Theme Colors - Black & White Only */
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --text-tertiary: #999999;
+  --border-primary: #2a2a2a;
+  --border-secondary: #3a3a3a;
+  --appwrite-pink: #ff4081;
+  --react-blue: #61dafb;
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
@@ -175,19 +171,29 @@ summary::-webkit-details-marker {
 
 /* Button Styles */
 .btn-primary {
-  background-color: var(--accent-primary);
+  background-color: var(--appwrite-pink);
   color: white;
   transition: all 0.2s ease;
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-secondary);
+  background-color: #e02c5f;
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
 
 .btn-primary:active {
   transform: translateY(0);
+}
+
+/* Appwrite accent */
+.appwrite-accent {
+  color: var(--appwrite-pink);
+}
+
+/* React accent */
+.react-accent {
+  color: var(--react-blue);
 }
 
 /* Glassmorphism Effect */
