@@ -32,24 +32,24 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[var(--bg-main)] px-4 py-12">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[var(--bg-main)] to-gray-100 px-2 py-10 flex items-center justify-center">
+      <div className="w-full max-w-5xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
         >
           <button
             onClick={() => navigate("/")}
-            className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] mb-4 inline-flex items-center gap-2 transition-colors"
+            className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-base font-medium inline-flex items-center gap-2 transition-colors"
           >
             ← Back to Projects
           </button>
-          <h1 className="text-4xl font-bold">My Profile</h1>
+          <h1 className="text-4xl font-extrabold tracking-tight text-[var(--text-primary)] drop-shadow-sm">My Profile</h1>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Profile Card */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -57,13 +57,13 @@ export default function Profile() {
             transition={{ delay: 0.1 }}
             className="md:col-span-1"
           >
-            <div className="card text-center" style={{ padding: "2rem", overflow: "hidden" }}>
-              <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-[var(--accent-pink)] flex items-center justify-center shadow-lg">
-                <User className="w-12 h-12 text-white" />
+            <div className="rounded-3xl shadow-2xl bg-white/90 text-center p-8 flex flex-col items-center border border-gray-100">
+              <div className="w-28 h-28 mb-6 rounded-full bg-gradient-to-br from-[var(--accent-pink)] to-pink-400 flex items-center justify-center shadow-xl border-4 border-white">
+                <User className="w-14 h-14 text-white" />
               </div>
-              <h2 className="text-xl font-bold mb-2 break-words px-2">{user?.name || "User"}</h2>
-              <p className="text-[var(--text-secondary)] mb-6 break-words text-xs px-2">{user?.email}</p>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-700 text-sm font-medium border border-green-200">
+              <h2 className="text-2xl font-bold mb-1 break-words px-2 text-[var(--text-primary)]">{user?.name || "User"}</h2>
+              <p className="text-[var(--text-secondary)] mb-4 break-words text-sm px-2">{user?.email}</p>
+              <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-green-100 text-green-700 text-base font-semibold border border-green-200 shadow-sm">
                 <span className="w-2 h-2 bg-green-500 rounded-full"></span>
                 Active
               </div>
@@ -77,35 +77,34 @@ export default function Profile() {
             transition={{ delay: 0.2 }}
             className="md:col-span-2"
           >
-            <div className="card" style={{ padding: "2rem" }}>
-              <h3 className="text-2xl font-bold mb-6">Account Information</h3>
-              
-              <div className="space-y-4">
+            <div className="rounded-3xl shadow-2xl bg-white/95 p-8 border border-gray-100">
+              <h3 className="text-2xl font-extrabold mb-8 text-[var(--text-primary)]">Account Information</h3>
+              <div className="space-y-6">
                 {/* User ID */}
-                <div className="py-3 border-b border-[var(--border-light)]">
-                  <p className="text-sm text-[var(--text-secondary)] mb-1">User ID</p>
-                  <p className="font-mono text-sm break-all">{user?.$id}</p>
+                <div className="py-3 border-b border-[var(--border-light)] flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-sm text-[var(--text-secondary)] mb-1 sm:mb-0">User ID</p>
+                  <p className="font-mono text-sm break-all text-right">{user?.$id}</p>
                 </div>
 
                 {/* Email */}
-                <div className="py-3 border-b border-[var(--border-light)]">
-                  <p className="text-sm text-[var(--text-secondary)] mb-1">Email</p>
-                  <p className="font-medium break-words">{user?.email}</p>
+                <div className="py-3 border-b border-[var(--border-light)] flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-sm text-[var(--text-secondary)] mb-1 sm:mb-0">Email</p>
+                  <p className="font-medium break-words text-right">{user?.email}</p>
                 </div>
 
                 {/* Account Created */}
-                <div className="py-3 border-b border-[var(--border-light)]">
-                  <p className="text-sm text-[var(--text-secondary)] mb-1">Member Since</p>
-                  <p className="font-medium">{formatDate(user?.$createdAt)}</p>
+                <div className="py-3 border-b border-[var(--border-light)] flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-sm text-[var(--text-secondary)] mb-1 sm:mb-0">Member Since</p>
+                  <p className="font-medium text-right">{formatDate(user?.$createdAt)}</p>
                 </div>
 
                 {/* Email Verification */}
-                <div className="py-3">
-                  <p className="text-sm text-[var(--text-secondary)] mb-1">Email Verification</p>
-                  <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${
+                <div className="py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-sm text-[var(--text-secondary)] mb-1 sm:mb-0">Email Verification</p>
+                  <span className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold shadow-sm border ${
                     user?.emailVerification 
-                      ? "bg-green-100 text-green-700" 
-                      : "bg-yellow-100 text-yellow-700"
+                      ? "bg-green-100 text-green-700 border-green-200" 
+                      : "bg-yellow-100 text-yellow-700 border-yellow-200"
                   }`}>
                     {user?.emailVerification ? "✓ Verified" : "⚠ Not Verified"}
                   </span>
@@ -120,21 +119,21 @@ export default function Profile() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-6"
+          className="mt-10 flex justify-end"
         >
           <button
             onClick={handleLogout}
             disabled={isLoading}
-            className="w-full sm:w-auto h-12 px-6 bg-red-50 text-red-600 border border-red-200 rounded-lg font-medium hover:bg-red-100 transition-all flex items-center justify-center gap-2"
+            className="flex items-center gap-2 px-7 py-3 rounded-xl bg-gradient-to-r from-red-400 to-red-600 text-white font-bold shadow-lg hover:from-red-500 hover:to-red-700 transition-all focus:outline-none focus:ring-2 focus:ring-red-300 disabled:opacity-60 disabled:cursor-not-allowed text-lg"
           >
             {isLoading ? (
               <>
-                <span className="spinner" />
+                <span className="spinner border-white border-2" />
                 Logging out...
               </>
             ) : (
               <>
-                <LogOut className="w-5 h-5" />
+                <LogOut className="w-6 h-6" />
                 Logout
               </>
             )}
