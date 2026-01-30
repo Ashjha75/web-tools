@@ -82,7 +82,18 @@ export default function ForgotPassword() {
             </p>
           </div>
 
-          {/* Form *}
+          {/* Error Message */}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm"
+            >
+              {error}
+            </motion.div>
+          )}
+
+          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email Field */}
             <div>

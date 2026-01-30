@@ -14,36 +14,6 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <Toaster
-          position="top-center"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: 'var(--bg-card)',
-              color: 'var(--text-primary)',
-              border: '1px solid var(--gray-200)',
-              borderRadius: '12px',
-              padding: '16px 20px',
-              fontSize: '15px',
-              boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-            },
-            success: {
-              iconTheme: {
-                primary: 'var(--accent-pink)',
-                secondary: '#fff',
-              },
-            },
-            error: {
-              iconTheme: {
-                primary: 'var(--accent-pink)',
-                secondary: '#fff',
-              },
-              style: {
-                border: '1px solid var(--accent-pink)',
-              },
-            },
-          }}
-        />
         <Routes>
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
