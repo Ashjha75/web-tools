@@ -18,7 +18,7 @@ export function Tiles({
 
   return (
     <div 
-      className={`relative z-0 flex w-full h-full justify-center ${className}`}
+      className={`relative z-0 flex w-full h-full ${className}`}
       style={{ 
         "--tile": "rgba(227, 208, 254, 0.15)",
       }}

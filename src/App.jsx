@@ -40,9 +40,9 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--bg-main)]">
+    <div className="min-h-screen bg-[var(--bg-main)] w-full">
       {/* Hero Section with Tiles Background */}
-      <section className="relative w-full overflow-hidden">
+      <section className="relative w-full overflow-hidden min-h-[600px] sm:min-h-[700px] flex items-center">
         {/* Tiles Background */}
         <div className="absolute inset-0 w-full h-full">
           <Tiles rows={50} cols={8} tileSize="sm" className="sm:hidden" />
@@ -53,12 +53,12 @@ function App() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--bg-main)]/50 to-[var(--bg-main)]" />
         
         {/* Hero Content */}
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 pt-16 sm:pt-24 md:pt-32 pb-16 sm:pb-20 md:pb-24">
+        <div className="relative z-10 w-full px-4 sm:px-6 py-16 sm:py-20 md:py-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-4xl mx-auto text-center"
+            className="max-w-4xl mx-auto text-center w-full"
           >
             {/* Badge */}
             <motion.div
@@ -151,16 +151,17 @@ function App() {
         <motion.section
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16"
+          className="w-full px-4 sm:px-6 py-8 sm:py-12 md:py-16"
         >
-          <div className="card">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
-              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <h2 className="text-xl sm:text-2xl font-bold">Activity Logs</h2>
-                <span className="badge badge-success text-xs sm:text-sm">{logs.length} events</span>
+          <div className="max-w-7xl mx-auto">
+            <div className="card">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
+                <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                  <h2 className="text-xl sm:text-2xl font-bold">Activity Logs</h2>
+                  <span className="badge badge-success text-xs sm:text-sm">{logs.length} events</span>
+                </div>
               </div>
-            </div>
             
             <div className="overflow-x-auto -mx-4 sm:mx-0">
               <div className="inline-block min-w-full align-middle">
@@ -210,6 +211,7 @@ function App() {
                   </tbody>
                 </table>
               </div>
+            </div>
             </div>
           </div>
         </motion.section>
