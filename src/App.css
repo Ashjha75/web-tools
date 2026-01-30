@@ -1,58 +1,85 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cal+Sans:wght@600;700&display=swap');
 @import "tailwindcss";
 
-/* Root CSS Variables for Theming */
+/* Cal.com inspired color system */
 :root {
-  /* Light Theme Colors - White & Black Only */
+  /* Light Theme - Cal.com Style */
   --bg-primary: #ffffff;
-  --bg-secondary: #fafafa;
-  --bg-tertiary: #f5f5f5;
-  --text-primary: #000000;
-  --text-secondary: #333333;
-  --text-tertiary: #666666;
-  --border-primary: #e0e0e0;
-  --border-secondary: #d0d0d0;
-  --appwrite-pink: #fd366e;
-  --react-blue: #61dafb;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  --bg-secondary: #f9fafb;
+  --bg-muted: #f3f4f6;
+  --bg-subtle: #f8f9fa;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --border-default: #e5e7eb;
+  --border-subtle: #f3f4f6;
+  --brand-primary: #292929;
+  --brand-accent: #4f46e5;
+  --brand-pink: #fd366e;
+  --brand-blue: #3b82f6;
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .dark {
-  /* Dark Theme Colors - Black & White Only */
-  --bg-primary: #000000;
-  --bg-secondary: #0a0a0a;
-  --bg-tertiary: #1a1a1a;
-  --text-primary: #ffffff;
-  --text-secondary: #cccccc;
-  --text-tertiary: #999999;
-  --border-primary: #2a2a2a;
-  --border-secondary: #3a3a3a;
-  --appwrite-pink: #ff4081;
-  --react-blue: #61dafb;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.6);
+  /* Dark Theme - Cal.com Style */
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-muted: #374151;
+  --bg-subtle: #1a1f2e;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  --border-default: #374151;
+  --border-subtle: #1f2937;
+  --brand-primary: #ffffff;
+  --brand-accent: #6366f1;
+  --brand-pink: #f472b6;
+  --brand-blue: #60a5fa;
+  --success: #34d399;
+  --error: #f87171;
+  --warning: #fbbf24;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
 }
 
 * {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: var(--bg-secondary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background-color: var(--bg-primary);
   color: var(--text-primary);
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Custom Animations */
-@keyframes fadeIn {
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Cal.com Style Animations */
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -60,10 +87,19 @@ body {
   }
 }
 
-@keyframes slideIn {
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
   }
   to {
     opacity: 1;
@@ -71,28 +107,10 @@ body {
   }
 }
 
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
 @keyframes scaleIn {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
@@ -100,17 +118,41 @@ body {
   }
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
 .animate-fadeIn {
-  animation: fadeIn 0.5s ease-out;
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
 .animate-slideIn {
-  animation: slideIn 0.5s ease-out;
+  animation: slideInFromLeft 0.5s ease-out forwards;
 }
 
 .animate-scaleIn {
-  animation: scaleIn 0.3s ease-out;
+  animation: scaleIn 0.4s ease-out forwards;
 }
+
+/* Stagger children animations */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
 
 summary::-webkit-details-marker {
   display: none;
@@ -118,6 +160,7 @@ summary::-webkit-details-marker {
 
 .checker-background {
   background-color: var(--bg-secondary);
+  position: relative;
 }
 
 .checker-background::before {
@@ -128,19 +171,18 @@ summary::-webkit-details-marker {
   bottom: 0;
   left: 0;
   background-image: 
-    linear-gradient(var(--border-primary) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border-primary) 1px, transparent 1px);
-  background-size: 3.7em 3.7em;
-  mask-image: radial-gradient(ellipse at 50% 40%, black 0%, transparent 55%);
-  z-index: -1;
-  background-position-x: center;
-  opacity: 0.3;
+    radial-gradient(circle at 1px 1px, var(--border-default) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: linear-gradient(to bottom, transparent, black 100px, black calc(100% - 100px), transparent);
+  opacity: 0.4;
+  z-index: 0;
+  pointer-events: none;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - Cal.com style */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -148,63 +190,120 @@ summary::-webkit-details-marker {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-secondary);
-  border-radius: 5px;
+  background: var(--border-default);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-tertiary);
+  background: var(--text-muted);
 }
 
-/* Card Styles */
-.card {
+/* Cal.com Style Cards */
+.cal-card {
   background-color: var(--bg-primary);
-  border: 1px solid var(--border-primary);
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s ease;
-}
-
-.card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-}
-
-/* Button Styles */
-.btn-primary {
-  background-color: var(--appwrite-pink);
-  color: white;
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 24px;
   transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
 }
 
-.btn-primary:hover {
-  background-color: #e02c5f;
+.cal-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--border-subtle);
+}
+
+/* Cal.com Style Buttons */
+.cal-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 10px 18px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 20px;
+  border: none;
+  outline: none;
+}
+
+.cal-btn-primary {
+  background-color: var(--brand-primary);
+  color: white;
+}
+
+.cal-btn-primary:hover {
+  background-color: #000000;
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
 
-.btn-primary:active {
-  transform: translateY(0);
+.cal-btn-secondary {
+  background-color: var(--bg-muted);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
 }
 
-/* Appwrite accent */
-.appwrite-accent {
-  color: var(--appwrite-pink);
+.cal-btn-secondary:hover {
+  background-color: var(--bg-subtle);
+  border-color: var(--brand-primary);
 }
 
-/* React accent */
-.react-accent {
-  color: var(--react-blue);
+/* Badge styles */
+.cal-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
 }
 
-/* Glassmorphism Effect */
-.glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.cal-badge-success {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success);
 }
 
-.dark .glass {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.cal-badge-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--error);
+}
+
+.cal-badge-neutral {
+  background-color: var(--bg-muted);
+  color: var(--text-secondary);
+}
+
+/* Input styles */
+.cal-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.cal-input:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(41, 41, 41, 0.1);
+}
+
+.dark .cal-input:focus {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

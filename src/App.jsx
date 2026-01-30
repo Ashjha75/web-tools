@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 import "./App.css";
 import { client } from "./lib/appwrite";
 import { AppwriteException } from "appwrite";
@@ -76,119 +77,171 @@ function App() {
 
   return (
     <main
-      className="checker-background relative flex flex-col items-center p-5 min-h-screen"
+      className="checker-background relative flex flex-col items-center min-h-screen py-12 px-4"
       style={{ marginBottom: `${detailHeight}px` }}
     >
       <ThemeSwitcher />
       
-      <div className="mt-25 flex w-full max-w-[40em] items-center justify-center lg:mt-34 animate-fadeIn">
-        <div className="rounded-[25%] border border-[#61dafb]/20 bg-[#61dafb]/5 p-3 shadow-lg transition-all duration-300 hover:scale-105 hover:border-[#61dafb]/40">
-          <div className="rounded-[25%] border border-[#61dafb]/10 bg-white dark:bg-black p-5 shadow-xl lg:p-9">
-            <img
-              alt={"React logo"}
-              src={ReactSvg}
-              className="h-14 w-14 transition-transform duration-300 hover:rotate-180"
-              width={56}
-              height={56}
-            />
-          </div>
-        </div>
-        <div
-          className={`flex w-38 items-center transition-opacity duration-2500 ${status === "success" ? "opacity-100" : "opacity-0"}`}
-        >
-          <div className="h-[1px] flex-1 bg-gradient-to-l from-[#fd366e] to-transparent"></div>
-          <div className="icon-check flex h-5 w-5 items-center justify-center rounded-full border border-[#fd366e]/30 bg-[#fd366e]/10 text-[#fd366e]"></div>
-          <div className="h-[1px] flex-1 bg-gradient-to-r from-[#fd366e] to-transparent"></div>
-        </div>
-        <div className="rounded-[25%] border border-[#fd366e]/20 bg-[#fd366e]/5 p-3 shadow-lg transition-all duration-300 hover:scale-105 hover:border-[#fd366e]/40">
-          <div className="rounded-[25%] border border-[#fd366e]/10 bg-white dark:bg-black p-5 shadow-xl lg:p-9">
-            <img
-              alt={"Appwrite logo"}
-              src={AppwriteSvg}
-              className="h-14 w-14 transition-transform duration-300 hover:rotate-180"
-              width={56}
-              height={56}
-            />
-          </div>
-        </div>
-      </div>
-
-      <section className="mt-12 flex h-52 flex-col items-center animate-fadeIn">
-        {status === "loading" ? (
-          <div className="flex flex-row gap-4 items-center">
-            <div role="status">
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6 animate-spin fill-[#fd366e] text-black/10 dark:text-white/10"
-                viewBox="0 0 100 101"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                  fill="currentFill"
-                />
-              </svg>
-              <span className="sr-only">Loading...</span>
+      {/* Hero Section */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="max-w-5xl w-full mx-auto text-center mb-16 relative z-10"
+      >
+        <div className="flex justify-center items-center gap-8 mb-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="relative group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
+            <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-xl">
+              <img
+                alt="React logo"
+                src={ReactSvg}
+                className="h-16 w-16 transition-transform duration-300 group-hover:rotate-180"
+                width={64}
+                height={64}
+              />
             </div>
-            <span className="text-black dark:text-white font-medium">Waiting for connection...</span>
-          </div>
-        ) : status === "success" ? (
-          <h1 className="font-[Poppins] text-3xl font-semibold text-[#fd366e]">
-            Congratulations!
-          </h1>
-        ) : (
-          <h1 className="font-[Poppins] text-3xl font-semibold text-black dark:text-white">
-            Check connection
-          </h1>
-        )}
+          </motion.div>
 
-        <p className="mt-3 mb-8 text-black/60 dark:text-white/60 text-center">
-          {status === "success" ? (
-            <span>You connected your app successfully. 🎉</span>
-          ) : status === "error" || status === "idle" ? (
-            <span>Send a ping to verify the connection</span>
-          ) : null}
-        </p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: status === "success" ? 1 : 0, scale: status === "success" ? 1 : 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex items-center gap-3"
+          >
+            <div className="h-[2px] w-12 bg-gradient-to-r from-pink-500 to-transparent"></div>
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div className="h-[2px] w-12 bg-gradient-to-l from-pink-500 to-transparent"></div>
+          </motion.div>
 
-        <button
-          onClick={sendPing}
-          className={`btn-primary cursor-pointer rounded-lg px-6 py-3 font-medium shadow-md hover:shadow-lg transform transition-all duration-200 ${status === "loading" ? "hidden" : "visible"}`}
-        >
-          <span className="text-white">Send a ping</span>
-        </button>
-      </section>
-
-      <div className="grid grid-rows-3 gap-7 lg:grid-cols-3 lg:grid-rows-none animate-slideIn">
-        <div className="card flex h-full w-72 flex-col gap-3 rounded-xl p-6 hover:scale-[1.02]">
-          <h2 className="text-xl font-semibold text-black dark:text-white">Edit your app</h2>
-          <p className="text-black/60 dark:text-white/60">
-            Edit{" "}
-            <code className="rounded-md bg-black/5 dark:bg-white/5 px-2 py-1 text-sm font-[Fira_Code] text-[#fd366e]">app/page.js</code>{" "}
-            to get started with building your app.
-          </p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="relative group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-pink-600 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
+            <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-xl">
+              <img
+                alt="Appwrite logo"
+                src={AppwriteSvg}
+                className="h-16 w-16 transition-transform duration-300 group-hover:rotate-180"
+                width={64}
+                height={64}
+              />
+            </div>
+          </motion.div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          {status === "loading" ? (
+            <div className="flex flex-col items-center gap-4">
+              <div className="relative">
+                <div className="w-12 h-12 border-4 border-gray-200 dark:border-gray-700 border-t-pink-600 rounded-full animate-spin"></div>
+              </div>
+              <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
+                Connecting to Appwrite...
+              </p>
+            </div>
+          ) : status === "success" ? (
+            <>
+              <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                Connection Successful! 🎉
+              </h1>
+              <p className="text-xl text-gray-600 dark:text-gray-400">
+                Your React app is now connected to Appwrite
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                Check Your Connection
+              </h1>
+              <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+                Send a ping to verify the Appwrite backend connection
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={sendPing}
+                className="cal-btn cal-btn-primary text-base px-8 py-3"
+              >
+                Send a Ping
+              </motion.button>
+            </>
+          )}
+        </motion.div>
+      </motion.div>
+
+      {/* Feature Cards */}
+      <motion.div 
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full mx-auto mb-12 relative z-10"
+      >
+        <div className="cal-card group">
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0">
+              <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+              </div>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                Edit Your App
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                Edit <code className="px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-pink-600 dark:text-pink-400 font-mono text-xs">src/App.jsx</code> to start building your application with React and Appwrite.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <a
           href="https://cloud.appwrite.io"
           target="_blank"
           rel="noopener noreferrer"
-          className="transform transition-transform hover:scale-[1.02]"
+          className="block"
         >
-          <div className="card flex h-full w-72 flex-col gap-3 rounded-xl p-6">
-            <div className="flex flex-row items-center justify-between">
-              <h2 className="text-xl font-semibold text-black dark:text-white">
-                Go to console
-              </h2>
-              <span className="icon-arrow-right text-black/30 dark:text-white/30 transition-transform group-hover:translate-x-1"></span>
+          <div className="cal-card group h-full">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                  </svg>
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Go to Console
+                  </h3>
+                  <svg className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Navigate to the Appwrite console to manage your databases, authentication, and storage.
+                </p>
+              </div>
             </div>
-            <p className="text-black/60 dark:text-white/60">
-              Navigate to the console to control and oversee the Appwrite
-              services.
-            </p>
           </div>
         </a>
 
@@ -196,122 +249,173 @@ function App() {
           href="https://appwrite.io/docs"
           target="_blank"
           rel="noopener noreferrer"
-          className="transform transition-transform hover:scale-[1.02]"
+          className="block"
         >
-          <div className="card flex h-full w-72 flex-col gap-3 rounded-xl p-6">
-            <div className="flex flex-row items-center justify-between">
-              <h2 className="text-xl font-semibold text-black dark:text-white">
-                Explore docs
-              </h2>
-              <span className="icon-arrow-right text-black/30 dark:text-white/30 transition-transform group-hover:translate-x-1"></span>
+          <div className="cal-card group h-full">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Explore Docs
+                  </h3>
+                  <svg className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Discover the full power of Appwrite by diving into our comprehensive documentation.
+                </p>
+              </div>
             </div>
-            <p className="text-black/60 dark:text-white/60">
-              Discover the full power of Appwrite by diving into our
-              documentation.
-            </p>
           </div>
         </a>
-      </div>
+      </motion.div>
 
-      <aside className="fixed bottom-0 flex w-full cursor-pointer border-t border-black/10 dark:border-white/10 bg-white dark:bg-black shadow-lg">
-        <details open={showLogs} ref={detailsRef} className={"w-full"}>
-          <summary className="flex w-full flex-row justify-between p-4 marker:content-none hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
-            <div className="flex gap-3 items-center">
-              <span className="font-semibold text-black dark:text-white">Logs</span>
+      {/* Logs Panel */}
+      <aside className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-2xl backdrop-blur-lg">
+        <details open={showLogs} ref={detailsRef} className="w-full">
+          <summary className="flex items-center justify-between px-6 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+            <div className="flex items-center gap-3">
+              <svg className="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <span className="font-semibold text-gray-900 dark:text-white">Activity Logs</span>
               {logs.length > 0 && (
-                <div className="flex items-center rounded-full bg-[#fd366e]/10 px-3 py-1 animate-scaleIn">
-                  <span className="font-semibold text-[#fd366e] text-sm">{logs.length}</span>
-                </div>
+                <span className="cal-badge cal-badge-neutral animate-scaleIn">
+                  {logs.length}
+                </span>
               )}
             </div>
-            <div className="icon">
-              <span className="icon-cheveron-down text-black/40 dark:text-white/40" aria-hidden="true"></span>
-            </div>
+            <svg className="w-5 h-5 text-gray-400 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
           </summary>
-          <div className="flex w-full flex-col lg:flex-row">
-            <div className="flex flex-col border-r border-black/10 dark:border-white/10">
-              <div className="border-y border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 px-4 py-2 text-black/50 dark:text-white/50 font-medium">
-                Project
+
+          <div className="border-t border-gray-200 dark:border-gray-800">
+            <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr]">
+              {/* Project Info Sidebar */}
+              <div className="border-r border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
+                <div className="px-6 py-3 border-b border-gray-200 dark:border-gray-800">
+                  <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Project Configuration
+                  </h4>
+                </div>
+                <div className="p-6 space-y-4">
+                  <div>
+                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 block mb-1">
+                      Endpoint
+                    </label>
+                    <p className="text-sm font-mono text-gray-900 dark:text-white break-all">
+                      http://localhost/v1
+                    </p>
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 block mb-1">
+                      Project ID
+                    </label>
+                    <p className="text-sm font-mono text-gray-900 dark:text-white">
+                      web-tools
+                    </p>
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 block mb-1">
+                      Project Name
+                    </label>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                      Web Tools
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div className="grid grid-cols-2 gap-4 p-4 bg-black/5 dark:bg-white/5">
-                <div className="flex flex-col gap-1">
-                  <span className="text-black/50 dark:text-white/50 text-sm font-medium">Endpoint</span>
-                  <span className="truncate text-black dark:text-white font-[Fira_Code] text-sm">
-                    http://localhost/v1
-                  </span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-black/50 dark:text-white/50 text-sm font-medium">Project-ID</span>
-                  <span className="truncate text-black dark:text-white font-[Fira_Code] text-sm">
-                    web-tools
-                  </span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-black/50 dark:text-white/50 text-sm font-medium">Project name</span>
-                  <span className="truncate text-black dark:text-white font-medium">
-                    Web Tools
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="flex-grow overflow-auto">
-              <table className="w-full">
-                <thead className="sticky top-0">
-                  <tr className="border-y border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 text-black/50 dark:text-white/50">
+
+              {/* Logs Table */}
+              <div className="overflow-auto max-h-80">
+                <table className="w-full">
+                  <thead className="bg-gray-50 dark:bg-gray-900/50 sticky top-0">
+                    <tr className="border-b border-gray-200 dark:border-gray-800">
+                      {logs.length > 0 ? (
+                        <>
+                          <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Timestamp
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Method
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden lg:table-cell">
+                            Path
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden xl:table-cell">
+                            Response
+                          </th>
+                        </>
+                      ) : (
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                          No Activity Yet
+                        </th>
+                      )}
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
                     {logs.length > 0 ? (
-                      <>
-                        <td className="w-52 py-3 pl-4 font-medium">Date</td>
-                        <td className="font-medium">Status</td>
-                        <td className="font-medium">Method</td>
-                        <td className="hidden lg:table-cell font-medium">Path</td>
-                        <td className="hidden lg:table-cell font-medium">Response</td>
-                      </>
+                      logs.map((log, index) => (
+                        <motion.tr
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.3, delay: index * 0.05 }}
+                          className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                        >
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-600 dark:text-gray-400">
+                            {log.date.toLocaleString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit",
+                            })}
+                          </td>
+                          <td className="px-4 py-4 whitespace-nowrap">
+                            {log.status >= 400 ? (
+                              <span className="cal-badge cal-badge-error">
+                                {log.status}
+                              </span>
+                            ) : (
+                              <span className="cal-badge cal-badge-success">
+                                {log.status}
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                            {log.method}
+                          </td>
+                          <td className="px-4 py-4 whitespace-nowrap text-sm font-mono text-gray-600 dark:text-gray-400 hidden lg:table-cell">
+                            {log.path}
+                          </td>
+                          <td className="px-4 py-4 text-sm font-mono text-gray-600 dark:text-gray-400 max-w-md truncate hidden xl:table-cell">
+                            {log.response}
+                          </td>
+                        </motion.tr>
+                      ))
                     ) : (
-                      <>
-                        <td className="py-3 pl-4 font-medium">Logs</td>
-                      </>
-                    )}
-                  </tr>
-                </thead>
-                <tbody className="bg-white dark:bg-black">
-                  {logs.length > 0 ? (
-                    logs.map((log, index) => (
-                      <tr key={index} className="border-b border-black/5 dark:border-white/5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
-                        <td className="py-3 pl-4 font-[Fira_Code] text-sm text-black/70 dark:text-white/70">
-                          {log.date.toLocaleString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </td>
-                        <td>
-                          {log.status > 400 ? (
-                            <div className="w-fit rounded-md bg-black/10 dark:bg-white/10 px-2 py-1 text-black dark:text-white font-medium text-sm border border-black/20 dark:border-white/20">
-                              {log.status}
-                            </div>
-                          ) : (
-                            <div className="w-fit rounded-md bg-[#fd366e]/10 px-2 py-1 text-[#fd366e] font-medium text-sm">
-                              {log.status}
-                            </div>
-                          )}
-                        </td>
-                        <td className="text-black/70 dark:text-white/70 font-medium">{log.method}</td>
-                        <td className="hidden lg:table-cell text-black/60 dark:text-white/60 font-[Fira_Code] text-sm">{log.path}</td>
-                        <td className="hidden font-[Fira_Code] text-sm lg:table-cell text-black/60 dark:text-white/60 max-w-md truncate">
-                          {log.response}
+                      <tr>
+                        <td className="px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400 italic">
+                          No logs to display. Send a ping to see activity here.
                         </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td className="py-4 pl-4 font-[Fira_Code] text-black/40 dark:text-white/40 italic">
-                        There are no logs to show
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </details>
