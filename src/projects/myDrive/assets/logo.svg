@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="driveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Cloud shape -->
+  <path d="M75 35c0-8.284-6.716-15-15-15-4.142 0-7.891 1.678-10.607 4.393A14.945 14.945 0 0040 20c-8.284 0-15 6.716-15 15 0 .34.011.677.033 1.011C18.716 37.22 14 42.61 14 49c0 7.18 5.82 13 13 13h48c7.18 0 13-5.82 13-13 0-6.628-4.954-12.087-11.333-12.917A14.907 14.907 0 0075 35z" 
+        fill="url(#driveGradient)" opacity="0.9"/>
+  <!-- Folder icon inside -->
+  <path d="M35 48h30v20a4 4 0 01-4 4H39a4 4 0 01-4-4V48z" fill="white" opacity="0.95"/>
+  <path d="M35 42a3 3 0 013-3h8l3 3h12a3 3 0 013 3v3H35v-6z" fill="white" opacity="0.95"/>
+  <!-- Upload arrow -->
+  <path d="M50 54v10m0-10l-3 3m3-3l3 3" stroke="url(#driveGradient)" stroke-width="2" stroke-linecap="round"/>
+</svg>

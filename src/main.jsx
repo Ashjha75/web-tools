@@ -8,6 +8,7 @@ import SignIn from './pages/SignIn.jsx'
 import SignUp from './pages/SignUp.jsx'
 import ForgotPassword from './pages/ForgotPassword.jsx'
 import Profile from './pages/Profile.jsx'
+import MyDrive from './projects/myDrive/MyDrive.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 
@@ -60,6 +61,14 @@ createRoot(document.getElementById('root')).render(
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/projects/mydrive"
+            element={
+              <ProtectedRoute>
+                <MyDrive />
               </ProtectedRoute>
             }
           />
