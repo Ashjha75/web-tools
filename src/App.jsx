@@ -1,43 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import "./App.css";
-import { client } from "./lib/appwrite";
+import { databases, DATABASE_ID, COLLECTION_ID } from "./lib/appwrite";
 import { AppwriteException } from "appwrite";
 import { Tiles } from "./components/Tiles";
 
 function App() {
-  const [logs, setLogs] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [status, setStatus] = useState("idle");
+  const [error, setError] = useState(null);
 
-  async function sendPing() {
+  // Fetch projects from Appwrite database
+  async function fetchProjects() {
     if (status === "loading") return;
     setStatus("loading");
+    setError(null);
+    
     try {
-      const result = await client.ping();
-      const log = {
-        date: new Date(),
-        method: "GET",
-        path: "/v1/ping",
-        status: 200,
-        response: JSON.stringify(result),
-      };
-      setLogs((prevLogs) => [log, ...prevLogs]);
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        COLLECTION_ID
+      );
+      setProjects(response.documents);
       setStatus("success");
     } catch (err) {
-      const log = {
-        date: new Date(),
-        method: "GET",
-        path: "/v1/ping",
-        status: err instanceof AppwriteException ? err.code : 500,
-        response:
-          err instanceof AppwriteException
-            ? err.message
-            : "Something went wrong",
-      };
-      setLogs((prevLogs) => [log, ...prevLogs]);
+      console.error("Error fetching projects:", err);
+      setError(
+        err instanceof AppwriteException
+          ? err.message
+          : "Failed to load projects. Please try again."
+      );
       setStatus("error");
     }
   }
+
+  // Fetch projects on component mount
+  useEffect(() => {
+    fetchProjects();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[var(--bg-main)] w-full">
@@ -80,8 +80,8 @@ function App() {
               transition={{ delay: 0.2 }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
             >
-              Attract top talent{" "}
-              <span className="text-[var(--text-secondary)]">faster</span>
+              My Projects{" "}
+              <span className="text-[var(--text-secondary)]">Portfolio</span>
             </motion.h1>
 
             {/* Subheading */}
@@ -91,8 +91,7 @@ function App() {
               transition={{ delay: 0.3 }}
               className="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] mb-8 sm:mb-10 max-w-2xl mx-auto"
             >
-              Stop playing email tag on interviews and make scheduling a
-              competitive advantage.
+              Explore my collection of web applications, tools, and creative projects built with modern technologies.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -103,18 +102,18 @@ function App() {
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center"
             >
               <button
-                onClick={sendPing}
+                onClick={fetchProjects}
                 disabled={status === "loading"}
                 className="btn btn-primary btn-responsive btn-rounded w-full sm:w-auto"
               >
                 {status === "loading" ? (
                   <>
                     <span className="spinner spinner-white" />
-                    Connecting...
+                    Loading...
                   </>
                 ) : (
                   <>
-                    Get started
+                    View Projects
                     <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
@@ -124,9 +123,9 @@ function App() {
               
               <button className="btn btn-secondary btn-responsive btn-rounded w-full sm:w-auto">
                 <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                Talk to sales
+                Contact Me
               </button>
             </motion.div>
 
@@ -140,26 +139,26 @@ function App() {
               <svg className="w-4 h-4 text-[var(--accent-pink)]" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              No credit card required
+              Powered by Appwrite
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Logs Section */}
-      {logs.length > 0 && (
+      {/* Projects Section */}
+      {status === "success" && projects.length > 0 && (
         <motion.section
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full px-4 sm:px-6 py-8 sm:py-12 md:py-16 flex justify-center items-center relative z-10"
         >
-          <div className="w-[80%] mb-5">
+          <div className="w-full max-w-6xl">
             <div className="card">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
                 <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <h2 className="text-xl sm:text-2xl font-bold">Activity Logs</h2>
-                  <span className="badge badge-success text-xs sm:text-sm">{logs.length} events</span>
+                  <h2 className="text-xl sm:text-2xl font-bold">My Projects</h2>
+                  <span className="badge badge-success text-xs sm:text-sm">{projects.length} projects</span>
                 </div>
               </div>
             
@@ -168,43 +167,42 @@ function App() {
                 <table className="min-w-full">
                   <thead>
                     <tr>
-                      <th className="whitespace-nowrap">Time</th>
-                      <th className="whitespace-nowrap">Method</th>
-                      <th className="whitespace-nowrap">Status</th>
-                      <th className="whitespace-nowrap">Path</th>
-                      <th className="whitespace-nowrap hidden sm:table-cell">Response</th>
+                      <th className="whitespace-nowrap">S.No</th>
+                      <th className="whitespace-nowrap">Project Name</th>
+                      <th className="whitespace-nowrap hidden md:table-cell">Description</th>
+                      <th className="whitespace-nowrap">Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {logs.map((log, index) => (
+                    {projects.map((project, index) => (
                       <motion.tr
-                        key={index}
+                        key={project.$id}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
                       >
                         <td className="font-mono text-xs sm:text-sm whitespace-nowrap">
-                          {log.date.toLocaleTimeString()}
+                          {index + 1}
+                        </td>
+                        <td className="font-semibold text-sm sm:text-base">
+                          {project.name || "Untitled Project"}
+                        </td>
+                        <td className="text-xs sm:text-sm text-[var(--text-secondary)] max-w-xs truncate hidden md:table-cell">
+                          {project.description || "No description available"}
                         </td>
                         <td>
-                          <span className="badge badge-blue font-mono text-xs">
-                            {log.method}
-                          </span>
-                        </td>
-                        <td>
-                          <span
-                            className={`badge text-xs ${
-                              log.status >= 200 && log.status < 300
-                                ? "badge-success"
-                                : "badge-error"
-                            }`}
+                          <a
+                            href={project.url || "#"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-sm btn-pink"
                           >
-                            {log.status === 200 ? "200 OK" : log.status}
-                          </span>
-                        </td>
-                        <td className="font-mono text-xs sm:text-sm">{log.path}</td>
-                        <td className="text-xs sm:text-sm text-[var(--text-secondary)] max-w-xs truncate hidden sm:table-cell">
-                          {log.response}
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            View
+                          </a>
                         </td>
                       </motion.tr>
                     ))}
@@ -212,6 +210,54 @@ function App() {
                 </table>
               </div>
             </div>
+            </div>
+          </div>
+        </motion.section>
+      )}
+
+      {/* Error State */}
+      {status === "error" && (
+        <motion.section
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full px-4 sm:px-6 py-8 sm:py-12 md:py-16 flex justify-center items-center relative z-10"
+        >
+          <div className="w-full max-w-2xl">
+            <div className="card text-center">
+              <div className="mb-4">
+                <svg className="w-16 h-16 mx-auto text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-2">Failed to Load Projects</h3>
+              <p className="text-[var(--text-secondary)] mb-4">{error}</p>
+              <button
+                onClick={fetchProjects}
+                className="btn btn-primary btn-rounded"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        </motion.section>
+      )}
+
+      {/* Empty State */}
+      {status === "success" && projects.length === 0 && (
+        <motion.section
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full px-4 sm:px-6 py-8 sm:py-12 md:py-16 flex justify-center items-center relative z-10"
+        >
+          <div className="w-full max-w-2xl">
+            <div className="card text-center">
+              <div className="mb-4">
+                <svg className="w-16 h-16 mx-auto text-[var(--text-tertiary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-2">No Projects Found</h3>
+              <p className="text-[var(--text-secondary)]">Start by adding projects to your Appwrite database.</p>
             </div>
           </div>
         </motion.section>

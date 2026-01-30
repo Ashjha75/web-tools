@@ -1,10 +1,14 @@
 import { Client, Account, Databases } from "appwrite";
 
 const client = new Client()
-    .setEndpoint("http://localhost/v1")
-    .setProject("web-tools");
+    .setEndpoint(import.meta.env.VITE_APPWRITE_ENDPOINT)
+    .setProject(import.meta.env.VITE_APPWRITE_PROJECT_ID);
 
 const account = new Account(client);
 const databases = new Databases(client);
+
+// Export database and collection IDs for easy access
+export const DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
+export const COLLECTION_ID = import.meta.env.VITE_APPWRITE_COLLECTION_ID;
 
 export { client, account, databases };
