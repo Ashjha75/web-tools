@@ -50,7 +50,10 @@ function App() {
       <nav className="relative z-30 bg-[var(--bg-card)] border-b border-[var(--border-light)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold">Projects Portfolio</h1>
+            <div className="flex items-center gap-2">
+              <img src="/logo.svg" alt="Logo" className="h-7 w-7" />
+              <p className="text-lg font-bold">Projects Portfolio</p>
+            </div>
             <div className="flex items-center gap-4">
               {user && (
                 <>

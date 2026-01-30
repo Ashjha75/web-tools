@@ -46,10 +46,10 @@ export default function Profile() {
           >
             ← Back to Projects
           </button>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)] drop-shadow-sm">My Profile</h1>
+          <h1 className="text-2xl sm:text-xl font-extrabold tracking-tight text-[var(--text-primary)] drop-shadow-sm">My Profile</h1>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14 items-stretch">
           {/* Profile Card */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -57,7 +57,7 @@ export default function Profile() {
             transition={{ delay: 0.1 }}
             className="lg:col-span-2"
           >
-            <div className="rounded-3xl shadow-xl bg-white p-6 sm:p-7 lg:p-8 flex flex-col items-center border border-gray-100 h-full">
+            <div className="rounded-3xl shadow-xl bg-white p-8 sm:p-10 lg:p-12 flex flex-col items-center border border-gray-200 h-full mb-4 lg:mb-0">
               <div className="w-22 h-22 sm:w-24 sm:h-24 mb-4 rounded-full bg-gradient-to-br from-[var(--accent-pink)] to-pink-500 flex items-center justify-center shadow-lg border-4 border-white">
                 <User className="w-11 h-11 sm:w-12 sm:h-12 text-white" />
               </div>
@@ -67,11 +67,11 @@ export default function Profile() {
                 <span className="w-2 h-2 bg-green-500 rounded-full"></span>
                 Active
               </div>
-              <div className="mt-6 w-full">
+              <div className="mt-8 w-full flex justify-center">
                 <button
                   onClick={handleLogout}
                   disabled={isLoading}
-                  className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold shadow-md hover:from-red-600 hover:to-red-700 transition-all focus:outline-none focus:ring-2 focus:ring-red-200 disabled:opacity-60 disabled:cursor-not-allowed text-sm sm:text-base"
+                  className="w-full max-w-xs flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold shadow-lg hover:from-red-600 hover:to-red-700 transition-all focus:outline-none focus:ring-2 focus:ring-red-200 disabled:opacity-60 disabled:cursor-not-allowed text-base border border-red-200"
                 >
                   {isLoading ? (
                     <>
@@ -96,7 +96,7 @@ export default function Profile() {
             transition={{ delay: 0.2 }}
             className="lg:col-span-3"
           >
-            <div className="rounded-3xl shadow-xl bg-white p-6 sm:p-7 lg:p-8 border border-gray-100 h-full flex flex-col">
+            <div className="rounded-3xl shadow-xl bg-white p-8 sm:p-10 lg:p-12 border border-gray-200 h-full flex flex-col ml-0 lg:ml-2">
               <h3 className="text-xl sm:text-2xl font-semibold mb-5 text-[var(--text-primary)]">Account Information</h3>
               <div className="space-y-3.5 flex-1">
                 {/* User ID */}
