@@ -61,21 +61,16 @@ export default function SignIn() {
               <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
                 Email Address <span className="text-[var(--accent-pink)]">*</span>
               </label>
-              <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <Mail className="w-4 h-4 text-[var(--text-tertiary)]" />
-                </div>
-                <input
-                  type="email"
-                  name="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  required
-                  className="input w-full h-12 pl-12 pr-4"
-                />
-              </div>
+              <input
+                type="email"
+                name="email"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                required
+                className="input w-full h-12"
+              />
             </div>
 
             {/* Password Field */}
@@ -92,9 +87,6 @@ export default function SignIn() {
                 </Link>
               </div>
               <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <Lock className="w-4 h-4 text-[var(--text-tertiary)]" />
-                </div>
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
@@ -103,14 +95,14 @@ export default function SignIn() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
-                  className="input w-full h-12 pl-12 pr-12"
+                  className="input w-full h-12 pr-12"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors font-medium"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? "Hide" : "Show"}
                 </button>
               </div>
             </div>

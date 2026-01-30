@@ -93,21 +93,16 @@ export default function ForgotPassword() {
               <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
                 Email Address <span className="text-[var(--accent-pink)]">*</span>
               </label>
-              <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <Mail className="w-4 h-4 text-[var(--text-tertiary)]" />
-                </div>
-                <input
-                  type="email"
-                  name="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  required
-                  className="input w-full h-12 pl-12 pr-4"
-                />
-              </div>
+              <input
+                type="email"
+                name="email"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                required
+                className="input w-full h-12"
+              />
             </div>
 
             {/* Submit Button */}
