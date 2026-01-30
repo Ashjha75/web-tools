@@ -42,9 +42,9 @@ function App() {
   return (
     <div className="min-h-screen bg-[var(--bg-main)] w-full">
       {/* Hero Section with Tiles Background */}
-      <section className="relative w-full min-h-[600px] sm:min-h-[700px] flex items-center justify-center overflow-hidden">
+      <section className="relative w-full min-h-[600px] sm:min-h-[700px] flex flex-col items-center justify-center overflow-hidden text-center">
         {/* Tiles Background */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <div className="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden">
           <Tiles rows={60} cols={20} tileSize="sm" className="sm:hidden" />
           <Tiles rows={100} cols={25} tileSize="md" className="hidden sm:flex" />
         </div>
@@ -53,12 +53,12 @@ function App() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--bg-main)]/50 to-[var(--bg-main)] pointer-events-none z-10" />
         
         {/* Hero Content */}
-        <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24">
+        <div className="flex relative justify-center z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-4xl mx-auto text-center"
+            className="max-w-4xl  text-center"
           >
             {/* Badge */}
             <motion.div
@@ -151,9 +151,9 @@ function App() {
         <motion.section
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-full px-4 sm:px-6 py-8 sm:py-12 md:py-16"
+          className="w-full px-4 sm:px-6 py-8 sm:py-12 md:py-16 flex justify-center items-center relative z-10"
         >
-          <div className="max-w-7xl mx-auto">
+          <div className="w-[80%] mb-5">
             <div className="card">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
                 <div className="flex items-center gap-2 sm:gap-3 flex-wrap">

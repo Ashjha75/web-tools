@@ -32,7 +32,7 @@ export function Tiles({
       {rowsArray.map((_, i) => (
         <motion.div
           key={`row-${i}`}
-          className={`${tileWidths[tileSize]} border-l border-gray-200 relative ${tileClassName}`}
+          className={`${tileWidths[tileSize]} border-l border-[var(--gray-200)] relative ${tileClassName} flex-shrink-0`}
         >
           {colsArray.map((_, j) => (
             <motion.div
@@ -44,7 +44,7 @@ export function Tiles({
                 transition: { duration: 2 }
               }}
               key={`col-${j}`}
-              className={`${tileDimensions[tileSize]} border-r border-t border-gray-200 relative ${tileClassName}`}
+              className={`${tileDimensions[tileSize]} border-r border-t border-[var(--gray-200)] relative ${tileClassName}`}
             />
           ))}
         </motion.div>
