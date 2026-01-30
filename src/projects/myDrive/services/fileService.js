@@ -1,5 +1,5 @@
-import { storage, BUCKET_ID } from "./appwriteConfig";
-import { ID } from "appwrite";
+import { storage, BUCKET_ID, account } from "./appwriteConfig";
+import { ID, Permission, Role } from "appwrite";
 import toast from "react-hot-toast";
 
 class FileService {
@@ -7,12 +7,21 @@ class FileService {
   async uploadFile(file, onProgress) {
     try {
       console.log("Uploading file:", file.name, "to bucket:", BUCKET_ID);
+      
+      // Upload with explicit public permissions
       const response = await storage.createFile(
         BUCKET_ID,
         ID.unique(),
-        file
+        file,
+        [
+          Permission.read(Role.any()),
+          Permission.update(Role.any()),
+          Permission.delete(Role.any())
+        ]
       );
+      
       console.log("Upload response:", response);
+      console.log("File permissions:", response.$permissions);
       toast.success(`${file.name} uploaded successfully!`);
       return response;
     } catch (error) {
@@ -26,9 +35,22 @@ class FileService {
   // List all files
   async listFiles(limit = 100, offset = 0) {
     try {
+      // Check auth status
+      try {
+        const user = await account.get();
+        console.log("Current user:", user.email, user.$id);
+      } catch (authError) {
+        console.log("User not authenticated or session expired");
+      }
+      
       console.log("Listing files with BUCKET_ID:", BUCKET_ID);
-      const response = await storage.listFiles(BUCKET_ID, [], limit, offset);
+      const response = await storage.listFiles(BUCKET_ID);
       console.log("Raw storage response:", response);
+      console.log("Files with permissions:", response.files.map(f => ({
+        name: f.name,
+        id: f.$id,
+        permissions: f.$permissions
+      })));
       return response;
     } catch (error) {
       console.error("List files error:", error);
