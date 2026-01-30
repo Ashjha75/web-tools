@@ -57,13 +57,13 @@ export default function Profile() {
             transition={{ delay: 0.1 }}
             className="md:col-span-1"
           >
-            <div className="card text-center" style={{ padding: "2rem" }}>
+            <div className="card text-center" style={{ padding: "2rem", overflow: "hidden" }}>
               <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-[var(--accent-pink)] flex items-center justify-center shadow-lg">
                 <User className="w-12 h-12 text-white" />
               </div>
-              <h2 className="text-2xl font-bold mb-2">{user?.name || "User"}</h2>
-              <p className="text-[var(--text-secondary)] mb-6">{user?.email}</p>
-              <div className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-green-50 text-green-700 text-sm font-medium border border-green-200">
+              <h2 className="text-xl font-bold mb-2 break-words px-2">{user?.name || "User"}</h2>
+              <p className="text-[var(--text-secondary)] mb-6 break-words text-xs px-2">{user?.email}</p>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-700 text-sm font-medium border border-green-200">
                 <span className="w-2 h-2 bg-green-500 rounded-full"></span>
                 Active
               </div>
@@ -82,44 +82,33 @@ export default function Profile() {
               
               <div className="space-y-4">
                 {/* User ID */}
-                <div className="flex items-start justify-between py-3 border-b border-[var(--border-light)]">
-                  <div>
-                    <p className="text-sm text-[var(--text-secondary)] mb-1">User ID</p>
-                    <p className="font-mono text-sm">{user?.$id}</p>
-                  </div>
+                <div className="py-3 border-b border-[var(--border-light)]">
+                  <p className="text-sm text-[var(--text-secondary)] mb-1">User ID</p>
+                  <p className="font-mono text-sm break-all">{user?.$id}</p>
                 </div>
 
                 {/* Email */}
-                <div className="flex items-start justify-between py-3 border-b border-[var(--border-light)]">
-                  <div className="flex items-center gap-3">
-                    <Mail className="w-5 h-5 text-[var(--text-tertiary)]" />
-                    <div>
-                      <p className="text-sm text-[var(--text-secondary)] mb-1">Email</p>
-                      <p className="font-medium">{user?.email}</p>
-                    </div>
-                  </div>
+                <div className="py-3 border-b border-[var(--border-light)]">
+                  <p className="text-sm text-[var(--text-secondary)] mb-1">Email</p>
+                  <p className="font-medium break-words">{user?.email}</p>
                 </div>
 
                 {/* Account Created */}
-                <div className="flex items-start justify-between py-3 border-b border-[var(--border-light)]">
-                  <div>
-                    <p className="text-sm text-[var(--text-secondary)] mb-1">Member Since</p>
-                    <p className="font-medium">{formatDate(user?.$createdAt)}</p>
-                  </div>
+                <div className="py-3 border-b border-[var(--border-light)]">
+                  <p className="text-sm text-[var(--text-secondary)] mb-1">Member Since</p>
+                  <p className="font-medium">{formatDate(user?.$createdAt)}</p>
                 </div>
 
                 {/* Email Verification */}
-                <div className="flex items-start justify-between py-3">
-                  <div>
-                    <p className="text-sm text-[var(--text-secondary)] mb-1">Email Verification</p>
-                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium ${
-                      user?.emailVerification 
-                        ? "bg-green-100 text-green-700" 
-                        : "bg-yellow-100 text-yellow-700"
-                    }`}>
-                      {user?.emailVerification ? "✓ Verified" : "⚠ Not Verified"}
-                    </span>
-                  </div>
+                <div className="py-3">
+                  <p className="text-sm text-[var(--text-secondary)] mb-1">Email Verification</p>
+                  <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${
+                    user?.emailVerification 
+                      ? "bg-green-100 text-green-700" 
+                      : "bg-yellow-100 text-yellow-700"
+                  }`}>
+                    {user?.emailVerification ? "✓ Verified" : "⚠ Not Verified"}
+                  </span>
                 </div>
               </div>
             </div>
