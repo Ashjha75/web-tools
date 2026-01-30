@@ -1,14 +1,22 @@
-import { Client, Storage } from "appwrite";
+import { Client, Storage, Account } from "appwrite";
 
 // Appwrite configuration for myDrive project
+// Reuse the main client to maintain authentication session
 const client = new Client();
 
 client
-  .setEndpoint(import.meta.env.VITE_MYDRIVE_APPWRITE_ENDPOINT || "https://cloud.appwrite.io/v1")
-  .setProject(import.meta.env.VITE_MYDRIVE_APPWRITE_PROJECT_ID);
+  .setEndpoint(import.meta.env.VITE_APPWRITE_ENDPOINT || "http://localhost/v1")
+  .setProject(import.meta.env.VITE_APPWRITE_PROJECT_ID);
 
 export const storage = new Storage(client);
+export const account = new Account(client);
 
 export const BUCKET_ID = import.meta.env.VITE_MYDRIVE_BUCKET_ID;
+
+// Log config for debugging
+console.log("myDrive Appwrite Config:");
+console.log("- Endpoint:", import.meta.env.VITE_APPWRITE_ENDPOINT);
+console.log("- Project ID:", import.meta.env.VITE_APPWRITE_PROJECT_ID);
+console.log("- Bucket ID:", BUCKET_ID);
 
 export default client;

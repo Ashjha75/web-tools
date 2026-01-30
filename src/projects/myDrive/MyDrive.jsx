@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { HardDrive, RefreshCw, ArrowLeft } from "lucide-react";
-import FileUpload from "../components/FileUpload";
-import FileList from "../components/FileList";
-import fileService from "../services/fileService";
-import logo from "../assets/logo.svg";
+import FileUpload from "./components/FileUpload";
+import FileList from "./components/FileList";
+import fileService from "./services/fileService";
+import logo from "./assets/logo.svg";
 
 export default function MyDrive() {
   const navigate = useNavigate();
@@ -15,7 +15,11 @@ export default function MyDrive() {
   const fetchFiles = async () => {
     setLoading(true);
     try {
+      console.log("Fetching files from bucket...");
       const response = await fileService.listFiles();
+      console.log("Files response:", response);
+      console.log("Files array:", response.files);
+      console.log("Total files:", response.total);
       setFiles(response.files || []);
     } catch (error) {
       console.error("Failed to fetch files:", error);
@@ -45,8 +49,8 @@ export default function MyDrive() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 px-4 sm:px-6 lg:px-8 py-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen w-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 px-4 sm:px-6 lg:px-8 py-8 flex flex-col items-center justify-center">
+      <div className="w-[87%] ">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

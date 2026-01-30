@@ -6,17 +6,18 @@ class FileService {
   // Upload a file
   async uploadFile(file, onProgress) {
     try {
+      console.log("Uploading file:", file.name, "to bucket:", BUCKET_ID);
       const response = await storage.createFile(
         BUCKET_ID,
         ID.unique(),
-        file,
-        undefined,
-        onProgress
+        file
       );
+      console.log("Upload response:", response);
       toast.success(`${file.name} uploaded successfully!`);
       return response;
     } catch (error) {
       console.error("Upload error:", error);
+      console.error("Upload error details:", JSON.stringify(error, null, 2));
       toast.error(error.message || "Failed to upload file");
       throw error;
     }
@@ -25,10 +26,13 @@ class FileService {
   // List all files
   async listFiles(limit = 100, offset = 0) {
     try {
+      console.log("Listing files with BUCKET_ID:", BUCKET_ID);
       const response = await storage.listFiles(BUCKET_ID, [], limit, offset);
+      console.log("Raw storage response:", response);
       return response;
     } catch (error) {
       console.error("List files error:", error);
+      console.error("Error details:", JSON.stringify(error, null, 2));
       toast.error(error.message || "Failed to fetch files");
       throw error;
     }
