@@ -176,52 +176,6 @@ function App() {
         </div>
       </section>
 
-      {/* Featured Projects Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        className="w-full px-4 sm:px-6 py-8 sm:py-12 md:py-16 flex justify-center items-center relative z-10"
-      >
-        <div className="w-full max-w-6xl">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Featured Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* myDrive Project Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className="card hover:shadow-2xl transition-shadow cursor-pointer"
-              onClick={() => navigate("/projects/mydrive")}
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
-                  <HardDrive className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">myDrive</h3>
-                  <p className="text-xs text-[var(--text-secondary)]">Cloud Storage</p>
-                </div>
-              </div>
-              <p className="text-sm text-[var(--text-secondary)] mb-4">
-                Personal cloud storage powered by Appwrite. Upload, manage, and share your files securely.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className="badge badge-primary text-xs">React</span>
-                <span className="badge badge-primary text-xs">Appwrite</span>
-                <span className="badge badge-primary text-xs">Storage</span>
-              </div>
-              <button className="btn btn-primary btn-sm w-full">
-                Open myDrive
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </button>
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
       {/* Projects Section */}
       {status === "success" && projects.length > 0 && (
         <motion.section
@@ -268,18 +222,35 @@ function App() {
                           {project.description || "No description available"}
                         </td>
                         <td>
-                          <a
-                            href={project.url || "#"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn btn-sm btn-pink"
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                            View
-                          </a>
+                          {project.project_url ? (
+                            <button
+                              onClick={() => {
+                                if (project.project_url.startsWith('http')) {
+                                  window.open(project.project_url, '_blank');
+                                } else {
+                                  navigate(project.project_url);
+                                }
+                              }}
+                              className="btn btn-sm btn-pink"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                              </svg>
+                              View
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => toast.error('Project URL missing')}
+                              className="btn btn-sm bg-gray-400 text-white cursor-not-allowed"
+                              disabled
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                              </svg>
+                              No URL
+                            </button>
+                          )}
                         </td>
                       </motion.tr>
                     ))}
