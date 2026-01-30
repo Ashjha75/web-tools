@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 import "./App.css";
 import { databases, DATABASE_ID, COLLECTION_ID } from "./lib/appwrite";
 import { AppwriteException } from "appwrite";
@@ -18,6 +19,23 @@ function App() {
   async function fetchProjects() {
     if (status === "loading") return;
     setStatus("loading");
+    setError(null);
+
+    try {
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        COLLECTION_ID
+      );
+      setProjects(response.documents);
+      setStatus("success");
+    } catch (err) {
+      const errorMessage = err.message || "Failed to load projects";
+      setError(errorMessage);
+      setStatus("error");
+      toast.error(errorMessage);
+      console.error("Error fetching projects:", err);
+    }
+  }
     setError(null);
     
     try {

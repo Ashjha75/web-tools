@@ -37,9 +37,8 @@ export const AuthProvider = ({ children }) => {
       await account.createEmailPasswordSession(email, password);
       const currentUser = await account.get();
       setUser(currentUser);
-      return { success: true };
     } catch (error) {
-      return { success: false, error: error.message };
+      throw new Error(error.message || "Failed to sign in");
     }
   };
 
@@ -49,9 +48,8 @@ export const AuthProvider = ({ children }) => {
       await account.createEmailPasswordSession(email, password);
       const currentUser = await account.get();
       setUser(currentUser);
-      return { success: true };
     } catch (error) {
-      return { success: false, error: error.message };
+      throw new Error(error.message || "Failed to create account");
     }
   };
 
@@ -59,9 +57,8 @@ export const AuthProvider = ({ children }) => {
     try {
       await account.deleteSession("current");
       setUser(null);
-      return { success: true };
     } catch (error) {
-      return { success: false, error: error.message };
+      throw new Error(error.message || "Failed to logout");
     }
   };
 
@@ -69,9 +66,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const redirectUrl = `${window.location.origin}/reset-password`;
       await account.createRecovery(email, redirectUrl);
-      return { success: true };
     } catch (error) {
-      return { success: false, error: error.message };
+      throw new Error(error.message || "Failed to send password reset email");
     }
   };
 
@@ -81,9 +77,8 @@ export const AuthProvider = ({ children }) => {
         throw new Error("Passwords do not match");
       }
       await account.updatePassword(password);
-      return { success: true };
     } catch (error) {
-      return { success: false, error: error.message };
+      throw new Error(error.message || "Failed to update password");
     }
   };
 

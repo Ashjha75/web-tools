@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 import { Mail, ArrowRight, CheckCircle } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
@@ -7,23 +8,22 @@ import { Link } from "react-router-dom";
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const { resetPassword } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setIsLoading(true);
 
-    const result = await resetPassword(email);
-    
-    if (result.success) {
+    try {
+      await resetPassword(email);
       setSuccess(true);
-    } else {
-      setError(result.error);
+      toast.success("Password reset email sent!");
+    } catch (err) {
+      toast.error(err.message || "Failed to send reset email");
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   if (success) {

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 import { User, Mail, LogOut, Edit2, Save, X } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -11,11 +12,15 @@ export default function Profile() {
 
   const handleLogout = async () => {
     setIsLoading(true);
-    const result = await logout();
-    if (result.success) {
+    try {
+      await logout();
+      toast.success("Logged out successfully");
       navigate("/signin");
+    } catch (err) {
+      toast.error(err.message || "Failed to logout");
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const formatDate = (dateString) => {
