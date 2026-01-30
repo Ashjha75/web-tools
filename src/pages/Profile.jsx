@@ -32,7 +32,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[var(--bg-main)] px-4 py-8">
+    <div className="min-h-screen w-full bg-[var(--bg-main)] px-4 py-12">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div
@@ -42,11 +42,11 @@ export default function Profile() {
         >
           <button
             onClick={() => navigate("/")}
-            className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] mb-4 inline-flex items-center gap-2"
+            className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] mb-4 inline-flex items-center gap-2 transition-colors"
           >
             ← Back to Projects
           </button>
-          <h1 className="text-3xl sm:text-4xl font-bold">My Profile</h1>
+          <h1 className="text-4xl font-bold">My Profile</h1>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -57,14 +57,15 @@ export default function Profile() {
             transition={{ delay: 0.1 }}
             className="md:col-span-1"
           >
-            <div className="card text-center">
-              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--accent-pink)] to-[var(--accent-blue)] flex items-center justify-center">
+            <div className="card text-center" style={{ padding: "2rem" }}>
+              <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-[var(--accent-pink)] flex items-center justify-center shadow-lg">
                 <User className="w-12 h-12 text-white" />
               </div>
-              <h2 className="text-xl font-bold mb-1">{user?.name || "User"}</h2>
-              <p className="text-[var(--text-secondary)] text-sm mb-4">{user?.email}</p>
-              <div className="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
-                ✓ Verified
+              <h2 className="text-2xl font-bold mb-2">{user?.name || "User"}</h2>
+              <p className="text-[var(--text-secondary)] mb-6">{user?.email}</p>
+              <div className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-green-50 text-green-700 text-sm font-medium border border-green-200">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                Active
               </div>
             </div>
           </motion.div>
@@ -76,8 +77,8 @@ export default function Profile() {
             transition={{ delay: 0.2 }}
             className="md:col-span-2"
           >
-            <div className="card">
-              <h3 className="text-xl font-bold mb-6">Account Information</h3>
+            <div className="card" style={{ padding: "2rem" }}>
+              <h3 className="text-2xl font-bold mb-6">Account Information</h3>
               
               <div className="space-y-4">
                 {/* User ID */}
@@ -130,12 +131,12 @@ export default function Profile() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-6 flex flex-col sm:flex-row gap-4"
+          className="mt-6"
         >
           <button
             onClick={handleLogout}
             disabled={isLoading}
-            className="btn btn-secondary btn-rounded flex-1 sm:flex-none"
+            className="w-full sm:w-auto h-12 px-6 bg-red-50 text-red-600 border border-red-200 rounded-lg font-medium hover:bg-red-100 transition-all flex items-center justify-center gap-2"
           >
             {isLoading ? (
               <>

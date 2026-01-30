@@ -28,27 +28,31 @@ export default function ForgotPassword() {
 
   if (success) {
     return (
-      <div className="min-h-screen w-full flex items-center justify-center bg-[var(--bg-main)] px-4 py-8">
+      <div className="min-h-screen w-full flex items-center justify-center bg-[var(--bg-main)] px-4 py-12">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
           className="w-full max-w-md"
         >
-          <div className="card text-center">
+          <div className="card text-center" style={{ padding: "2rem" }}>
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: "spring" }}
-              className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center"
+              className="w-20 h-20 mx-auto mb-6 rounded-full bg-green-50 border-4 border-green-200 flex items-center justify-center"
             >
-              <CheckCircle className="w-8 h-8 text-green-600" />
+              <CheckCircle className="w-10 h-10 text-green-600" />
             </motion.div>
-            <h1 className="text-2xl sm:text-3xl font-bold mb-2">Check Your Email</h1>
-            <p className="text-[var(--text-secondary)] mb-6">
-              We've sent password reset instructions to <strong>{email}</strong>
+            <h1 className="text-3xl font-bold mb-3">Check Your Email</h1>
+            <p className="text-[var(--text-secondary)] mb-8 text-lg">
+              We've sent password reset instructions to<br />
+              <strong className="text-[var(--text-primary)]">{email}</strong>
             </p>
-            <Link to="/signin" className="btn btn-primary btn-rounded w-full">
+            <Link 
+              to="/signin" 
+              className="w-full h-12 bg-[var(--primary-black)] text-white rounded-lg font-medium hover:opacity-90 transition-all flex items-center justify-center gap-2"
+            >
               Back to Sign In
             </Link>
           </div>
@@ -81,17 +85,6 @@ export default function ForgotPassword() {
               Enter your email to receive reset instructions
             </p>
           </div>
-
-          {/* Error Message */}
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm"
-            >
-              {error}
-            </motion.div>
-          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
