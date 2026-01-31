@@ -106,10 +106,8 @@ export default function FileList({ files, onFileDeleted, onFileRenamed, loading 
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             {/* File Icon & Info */}
             <div className="flex items-center gap-4 flex-1 min-w-0">
-              <div className="w-12 h-12 rounded-xl bg-[var(--accent-pink)] bg-opacity-10 flex items-center justify-center flex-shrink-0">
-                <span className="text-2xl">
-                  {fileService.getFileIcon(file.mimeType)}
-                </span>
+              <div className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
+                {fileService.getFileIcon(file.mimeType)}
               </div>
               <div className="flex-1 min-w-0">
                 {editingFile === file.$id ? (
@@ -128,14 +126,14 @@ export default function FileList({ files, onFileDeleted, onFileRenamed, loading 
                     <button
                       onClick={() => handleRename(file.$id)}
                       disabled={isRenaming}
-                      className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                      className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors"
                       title="Save"
                     >
                       <Check className="w-5 h-5" />
                     </button>
                     <button
                       onClick={cancelRename}
-                      className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+                      className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
                       title="Cancel"
                     >
                       <X className="w-5 h-5" />

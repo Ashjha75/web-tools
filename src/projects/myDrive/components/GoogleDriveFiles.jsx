@@ -281,25 +281,23 @@ function GoogleDriveFiles() {
               <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                 {/* File Icon & Info */}
                 <div className="flex items-center gap-4 flex-1 min-w-0">
-                  {file.thumbnailLink ? (
-                    <img
-                      src={file.thumbnailLink}
-                      alt={file.name}
-                      className="w-12 h-12 rounded-xl object-cover flex-shrink-0"
-                    />
-                  ) : file.iconLink ? (
-                    <img
-                      src={file.iconLink}
-                      alt={file.name}
-                      className="w-12 h-12 rounded-xl flex-shrink-0"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
-                      <span className="text-2xl">
-                        {googleDriveService.getFileIcon(file.mimeType)}
-                      </span>
-                    </div>
-                  )}
+                  <div className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
+                    {file.thumbnailLink ? (
+                      <img
+                        src={file.thumbnailLink}
+                        alt={file.name}
+                        className="w-full h-full rounded-xl object-cover"
+                      />
+                    ) : file.iconLink ? (
+                      <img
+                        src={file.iconLink}
+                        alt={file.name}
+                        className="w-8 h-8"
+                      />
+                    ) : (
+                      googleDriveService.getFileIcon(file.mimeType)
+                    )}
+                  </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold text-[var(--text-primary)] text-base truncate">
                       {file.name}

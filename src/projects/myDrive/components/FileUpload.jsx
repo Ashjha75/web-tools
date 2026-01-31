@@ -174,11 +174,11 @@ export default function FileUpload({ onFileUploaded }) {
             {selectedFiles.map((fileData) => (
               <div
                 key={fileData.id}
-                className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-200"
+                className="flex items-center gap-4 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-200"
               >
-                <span className="text-2xl flex-shrink-0">
+                <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-white rounded-lg border">
                   {fileService.getFileIcon(fileData.file.type)}
-                </span>
+                </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-sm truncate">{fileData.file.name}</p>
                   <p className="text-xs text-[var(--text-secondary)]">
@@ -196,10 +196,10 @@ export default function FileUpload({ onFileUploaded }) {
                     </div>
                   )}
                   {fileData.status === "completed" && (
-                    <p className="text-xs text-green-600 mt-1">✓ Uploaded</p>
+                    <p className="text-xs text-green-600 mt-1 font-semibold">✓ Uploaded</p>
                   )}
                   {fileData.status === "error" && (
-                    <p className="text-xs text-red-600 mt-1">✗ Failed</p>
+                    <p className="text-xs text-red-600 mt-1 font-semibold">✗ Upload Failed</p>
                   )}
                 </div>
                 {fileData.status === "pending" && (
@@ -208,7 +208,7 @@ export default function FileUpload({ onFileUploaded }) {
                       e.stopPropagation();
                       removeFile(fileData.id);
                     }}
-                    className="p-1.5 text-gray-600 hover:bg-white rounded-lg transition-colors flex-shrink-0"
+                    className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-100 rounded-full transition-colors flex-shrink-0"
                   >
                     <X className="w-4 h-4" />
                   </button>

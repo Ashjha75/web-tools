@@ -1,4 +1,5 @@
 /* global gapi */
+import { File, Folder, Image, Video, Music, FileText, Archive } from "lucide-react";
 
 class GoogleDriveService {
   constructor() {
@@ -387,27 +388,28 @@ class GoogleDriveService {
 
   // Get file icon based on mime type
   getFileIcon(mimeType) {
-    if (!mimeType) return "📄";
+    const baseClass = "w-7 h-7";
+    if (!mimeType) return <File className={`${baseClass} text-gray-500`} />;
 
-    if (mimeType.includes("folder")) return "📁";
-    if (mimeType.includes("image")) return "🖼️";
-    if (mimeType.includes("video")) return "🎥";
-    if (mimeType.includes("audio")) return "🎵";
-    if (mimeType.includes("pdf")) return "📕";
+    if (mimeType.includes("folder")) return <Folder className={`${baseClass} text-amber-600`} />;
+    if (mimeType.includes("image")) return <Image className={`${baseClass} text-indigo-500`} />;
+    if (mimeType.includes("video")) return <Video className={`${baseClass} text-rose-500`} />;
+    if (mimeType.includes("audio")) return <Music className={`${baseClass} text-emerald-500`} />;
+    if (mimeType.includes("pdf")) return <FileText className={`${baseClass} text-red-500`} />;
     if (
       mimeType.includes("document") ||
       mimeType.includes("word") ||
       mimeType.includes("text")
     )
-      return "📝";
+      return <FileText className={`${baseClass} text-blue-600`} />;
     if (mimeType.includes("spreadsheet") || mimeType.includes("excel"))
-      return "📊";
+      return <FileText className={`${baseClass} text-green-600`} />;
     if (mimeType.includes("presentation") || mimeType.includes("powerpoint"))
-      return "📽️";
+      return <FileText className={`${baseClass} text-orange-500`} />;
     if (mimeType.includes("zip") || mimeType.includes("compressed"))
-      return "📦";
+      return <Archive className={`${baseClass} text-amber-700`} />;
 
-    return "📄";
+    return <File className={`${baseClass} text-gray-500`} />;
   }
 }
 
