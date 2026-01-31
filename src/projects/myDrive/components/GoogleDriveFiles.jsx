@@ -31,7 +31,13 @@ function GoogleDriveFiles() {
   const initGoogleDrive = async () => {
     try {
       await googleDriveService.initClient();
-      setIsSignedIn(googleDriveService.isSignedIn());
+      const signedIn = googleDriveService.isSignedIn();
+      setIsSignedIn(signedIn);
+      
+      // If user is already signed in (token in localStorage), load their data
+      if (signedIn) {
+        await loadUserData();
+      }
     } catch (error) {
       console.error("Failed to initialize Google Drive:", error);
       toast.error("Failed to initialize Google Drive");
