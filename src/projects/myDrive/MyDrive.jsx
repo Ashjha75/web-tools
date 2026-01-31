@@ -100,8 +100,8 @@ export default function MyDrive() {
         >
           <div className="card p-6">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-[var(--accent-pink)] bg-opacity-10 flex items-center justify-center flex-shrink-0">
-                <FileText className="w-7 h-7 text-[var(--accent-pink)]" />
+              <div className="w-14 h-14 rounded-2xl bg-[var(--accent-pink)] flex items-center justify-center flex-shrink-0">
+                <FileText className="w-7 h-7 text-white" />
               </div>
               <div className="flex-1">
                 <p className="text-3xl font-bold text-[var(--text-primary)]">{files.length}</p>
@@ -112,8 +112,8 @@ export default function MyDrive() {
 
           <div className="card p-6">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-[var(--accent-pink)] bg-opacity-10 flex items-center justify-center flex-shrink-0">
-                <Database className="w-7 h-7 text-[var(--accent-pink)]" />
+              <div className="w-14 h-14 rounded-2xl bg-[var(--accent-pink)] flex items-center justify-center flex-shrink-0">
+                <Database className="w-7 h-7 text-white" />
               </div>
               <div className="flex-1">
                 <p className="text-3xl font-bold text-[var(--text-primary)]">
@@ -128,8 +128,8 @@ export default function MyDrive() {
 
           <div className="card p-6 sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center flex-shrink-0">
-                <CheckCircle className="w-7 h-7 text-green-600" />
+              <div className="w-14 h-14 rounded-2xl bg-green-500 flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-7 h-7 text-white" />
               </div>
               <div className="flex-1">
                 <p className="text-3xl font-bold text-green-600">Active</p>
