@@ -14,9 +14,5 @@ export const account = new Account(client);
 export const BUCKET_ID = import.meta.env.VITE_MYDRIVE_BUCKET_ID;
 
 // Log config for debugging
-console.log("myDrive Appwrite Config:");
-console.log("- Endpoint:", import.meta.env.VITE_APPWRITE_ENDPOINT);
-console.log("- Project ID:", import.meta.env.VITE_APPWRITE_PROJECT_ID);
-console.log("- Bucket ID:", BUCKET_ID);
 
 export default client;

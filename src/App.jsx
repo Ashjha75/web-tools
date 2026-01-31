@@ -8,6 +8,7 @@ import { Tiles } from "./components/Tiles";
 import { useAuth } from "./context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { User, LogOut, HardDrive } from "lucide-react";
+import { asset } from "./lib/asset";
 
 function App() {
   const [projects, setProjects] = useState([]);
@@ -58,7 +59,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <img src="/logo.svg" alt="Logo" className="h-7 w-7" />
+              <img src={asset('logo.svg')} alt="Logo" className="h-7 w-7" />
               <p className="text-lg font-bold">Projects Portfolio</p>
             </div>
             <div className="flex items-center gap-4">
