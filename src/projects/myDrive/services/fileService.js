@@ -83,6 +83,18 @@ class FileService {
     }
   }
 
+  // Get file for viewing
+  getFileView(fileId) {
+    try {
+      // This returns a URL object
+      return storage.getFileView(BUCKET_ID, fileId);
+    } catch (error) {
+      console.error("Get file view URL error:", error);
+      toast.error(error.message || "Failed to get file link");
+      return null;
+    }
+  }
+
   // Delete a file
   async deleteFile(fileId, fileName) {
     try {

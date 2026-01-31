@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Download, Trash2, Edit2, X, Check } from "lucide-react";
+import { Download, Trash2, Edit2, X, Check, Link } from "lucide-react";
 import fileService from "../services/fileService";
 import FileIcon from "./FileIcon";
 
@@ -156,6 +156,17 @@ export default function FileList({ files, onFileDeleted, onFileRenamed, loading 
             {/* Actions */}
             {editingFile !== file.$id && (
               <div className="flex items-center gap-2 flex-shrink-0">
+                <button
+                  onClick={() => {
+                    const url = fileService.getFileView(file.$id);
+                    navigator.clipboard.writeText(url.href);
+                    alert("Link copied to clipboard!");
+                  }}
+                  className="p-2.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent hover:border-blue-200"
+                  title="Copy Link"
+                >
+                  <Link className="w-5 h-5" />
+                </button>
                 <button
                   onClick={() => handleDownload(file.$id, file.name)}
                   className="p-2.5 text-[var(--accent-pink)] hover:bg-pink-50 rounded-lg transition-colors border border-transparent hover:border-[var(--accent-pink)] hover:border-opacity-20"
