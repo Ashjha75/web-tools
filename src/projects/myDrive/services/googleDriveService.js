@@ -5,6 +5,42 @@ class GoogleDriveService {
   constructor() {
     this.accessToken = null;
     this.tokenClient = null;
+    this.tokenData = this.loadToken();
+    if (this.tokenData && this.tokenData.expiresAt > Date.now()) {
+      this.accessToken = this.tokenData.accessToken;
+    }
+  }
+
+  // Load token from localStorage
+  loadToken() {
+    const tokenJson = localStorage.getItem("googleDriveToken");
+    if (!tokenJson) return null;
+    try {
+      const tokenData = JSON.parse(tokenJson);
+      // Check if token is expired
+      if (tokenData.expiresAt <= Date.now()) {
+        localStorage.removeItem("googleDriveToken");
+        return null;
+      }
+      return tokenData;
+    } catch (error) {
+      localStorage.removeItem("googleDriveToken");
+      return null;
+    }
+  }
+
+  // Save token to localStorage
+  saveToken(accessToken, expiresIn) {
+    const expiresAt = Date.now() + expiresIn * 1000;
+    const tokenData = { accessToken, expiresAt };
+    localStorage.setItem("googleDriveToken", JSON.stringify(tokenData));
+    this.tokenData = tokenData;
+  }
+
+  // Clear token from localStorage
+  clearToken() {
+    localStorage.removeItem("googleDriveToken");
+    this.tokenData = null;
   }
 
   // Initialize Google Identity Services
@@ -32,6 +68,7 @@ class GoogleDriveService {
         callback: (response) => {
           if (response.access_token) {
             this.accessToken = response.access_token;
+            this.saveToken(response.access_token, response.expires_in || 3600);
           }
         },
       });
@@ -57,6 +94,7 @@ class GoogleDriveService {
             reject(response);
           } else {
             this.accessToken = response.access_token;
+            this.saveToken(response.access_token, response.expires_in || 3600);
             resolve(true);
           }
         };
@@ -74,6 +112,7 @@ class GoogleDriveService {
       if (this.accessToken) {
         await window.google.accounts.oauth2.revoke(this.accessToken);
         this.accessToken = null;
+        this.clearToken();
       }
       return true;
     } catch (error) {
@@ -84,6 +123,10 @@ class GoogleDriveService {
 
   // Check if signed in
   isSignedIn() {
+    if (this.tokenData && this.tokenData.expiresAt <= Date.now()) {
+      this.signOut(); // Token expired, so sign out
+      return false;
+    }
     return !!this.accessToken;
   }
 
@@ -91,7 +134,13 @@ class GoogleDriveService {
   async getUserProfile() {
     try {
       if (!this.accessToken) {
-        throw new Error("User not signed in");
+        // Try to re-initiate from stored token before failing
+        const storedToken = this.loadToken();
+        if (storedToken) {
+          this.accessToken = storedToken.accessToken;
+        } else {
+          throw new Error("User not signed in");
+        }
       }
 
       const response = await fetch(
@@ -118,7 +167,12 @@ class GoogleDriveService {
   async listFiles(pageSize = 100, pageToken = null) {
     try {
       if (!this.accessToken) {
-        throw new Error("User not signed in");
+        const storedToken = this.loadToken();
+        if (storedToken) {
+          this.accessToken = storedToken.accessToken;
+        } else {
+          throw new Error("User not signed in");
+        }
       }
 
       let url = `https://www.googleapis.com/drive/v3/files?pageSize=${pageSize}&fields=nextPageToken,files(id,name,mimeType,size,createdTime,modifiedTime,thumbnailLink,webViewLink,webContentLink,iconLink,parents)&orderBy=modifiedTime desc`;
@@ -148,7 +202,12 @@ class GoogleDriveService {
   async searchFiles(query) {
     try {
       if (!this.accessToken) {
-        throw new Error("User not signed in");
+        const storedToken = this.loadToken();
+        if (storedToken) {
+          this.accessToken = storedToken.accessToken;
+        } else {
+          throw new Error("User not signed in");
+        }
       }
 
       const url = `https://www.googleapis.com/drive/v3/files?q=name contains '${encodeURIComponent(
@@ -177,7 +236,12 @@ class GoogleDriveService {
   async getFile(fileId) {
     try {
       if (!this.accessToken) {
-        throw new Error("User not signed in");
+        const storedToken = this.loadToken();
+        if (storedToken) {
+          this.accessToken = storedToken.accessToken;
+        } else {
+          throw new Error("User not signed in");
+        }
       }
 
       const response = await fetch(
@@ -204,7 +268,12 @@ class GoogleDriveService {
   async downloadFile(fileId, fileName) {
     try {
       if (!this.accessToken) {
-        throw new Error("User not signed in");
+        const storedToken = this.loadToken();
+        if (storedToken) {
+          this.accessToken = storedToken.accessToken;
+        } else {
+          throw new Error("User not signed in");
+        }
       }
 
       const response = await fetch(
@@ -241,7 +310,12 @@ class GoogleDriveService {
   async createFolder(folderName, parentId = null) {
     try {
       if (!this.accessToken) {
-        throw new Error("User not signed in");
+        const storedToken = this.loadToken();
+        if (storedToken) {
+          this.accessToken = storedToken.accessToken;
+        } else {
+          throw new Error("User not signed in");
+        }
       }
 
       const fileMetadata = {
@@ -280,7 +354,12 @@ class GoogleDriveService {
   async uploadFile(file, parentId = null) {
     try {
       if (!this.accessToken) {
-        throw new Error("User not signed in");
+        const storedToken = this.loadToken();
+        if (storedToken) {
+          this.accessToken = storedToken.accessToken;
+        } else {
+          throw new Error("User not signed in");
+        }
       }
 
       const metadata = {
@@ -325,7 +404,12 @@ class GoogleDriveService {
   async deleteFile(fileId) {
     try {
       if (!this.accessToken) {
-        throw new Error("User not signed in");
+        const storedToken = this.loadToken();
+        if (storedToken) {
+          this.accessToken = storedToken.accessToken;
+        } else {
+          throw new Error("User not signed in");
+        }
       }
 
       const response = await fetch(
@@ -353,7 +437,12 @@ class GoogleDriveService {
   async getStorageQuota() {
     try {
       if (!this.accessToken) {
-        throw new Error("User not signed in");
+        const storedToken = this.loadToken();
+        if (storedToken) {
+          this.accessToken = storedToken.accessToken;
+        } else {
+          throw new Error("User not signed in");
+        }
       }
 
       const response = await fetch(
