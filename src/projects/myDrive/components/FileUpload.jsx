@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Upload, X, FileUp } from "lucide-react";
 import fileService from "../services/fileService";
+import FileIcon from "./FileIcon";
 
 export default function FileUpload({ onFileUploaded }) {
   const [isDragging, setIsDragging] = useState(false);
@@ -177,7 +178,7 @@ export default function FileUpload({ onFileUploaded }) {
                 className="flex items-center gap-4 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-200"
               >
                 <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-white rounded-lg border">
-                  {fileService.getFileIcon(fileData.file.type)}
+                  <FileIcon mimeType={fileData.file.type} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-sm truncate">{fileData.file.name}</p>

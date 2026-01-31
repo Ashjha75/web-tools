@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import googleDriveService from "../services/googleDriveService";
+import FileIcon from "./FileIcon";
 
 function GoogleDriveFiles() {
   const [files, setFiles] = useState([]);
@@ -295,7 +296,7 @@ function GoogleDriveFiles() {
                         className="w-8 h-8"
                       />
                     ) : (
-                      googleDriveService.getFileIcon(file.mimeType)
+                      <FileIcon mimeType={file.mimeType} />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">

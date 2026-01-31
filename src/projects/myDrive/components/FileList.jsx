@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Download, Trash2, Edit2, X, Check } from "lucide-react";
 import fileService from "../services/fileService";
+import FileIcon from "./FileIcon";
 
 export default function FileList({ files, onFileDeleted, onFileRenamed, loading }) {
   const [editingFile, setEditingFile] = useState(null);
@@ -107,7 +108,7 @@ export default function FileList({ files, onFileDeleted, onFileRenamed, loading 
             {/* File Icon & Info */}
             <div className="flex items-center gap-4 flex-1 min-w-0">
               <div className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
-                {fileService.getFileIcon(file.mimeType)}
+                <FileIcon mimeType={file.mimeType} />
               </div>
               <div className="flex-1 min-w-0">
                 {editingFile === file.$id ? (
