@@ -7,7 +7,7 @@ import { AppwriteException } from "appwrite";
 import { Tiles } from "./components/Tiles";
 import { useAuth } from "./context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { User, LogOut, HardDrive } from "lucide-react";
+import { User, LogOut, ExternalLink } from "lucide-react";
 import { asset } from "./lib/asset";
 
 function App() {
@@ -159,7 +159,10 @@ function App() {
                 )}
               </button>
               
-              <button className="btn btn-secondary btn-responsive btn-rounded w-full sm:w-auto">
+              <button
+                className="btn btn-secondary btn-responsive btn-rounded w-full sm:w-auto"
+                onClick={() => window.open('https://ashjha75.github.io/portfolio-web/#contact-me', '_blank')}
+              >
                 <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -212,55 +215,73 @@ function App() {
                     </tr>
                   </thead>
                   <tbody>
-                    {projects.map((project, index) => (
-                      <motion.tr
-                        key={project.$id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                      >
-                        <td className="font-mono text-xs sm:text-sm whitespace-nowrap">
-                          {index + 1}
-                        </td>
-                        <td className="font-semibold text-sm sm:text-base">
-                          {project.name || "Untitled Project"}
-                        </td>
-                        <td className="text-xs sm:text-sm text-[var(--text-secondary)] max-w-xs truncate hidden md:table-cell">
-                          {project.description || "No description available"}
-                        </td>
-                        <td>
-                          {project.project_url ? (
-                            <button
-                              onClick={() => {
-                                if (project.project_url.startsWith('http')) {
-                                  window.open(project.project_url, '_blank');
-                                } else {
-                                  navigate(project.project_url);
-                                }
-                              }}
-                              className="btn btn-sm btn-pink"
-                            >
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                              </svg>
-                              View
-                            </button>
-                          ) : (
-                            <button
-                              onClick={() => toast.error('Project URL missing')}
-                              className="btn btn-sm bg-gray-400 text-white cursor-not-allowed"
-                              disabled
-                            >
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                              </svg>
-                              No URL
-                            </button>
-                          )}
-                        </td>
-                      </motion.tr>
-                    ))}
+                    {projects.map((project, index) => {
+                      // Check if project has "external" tag
+                      const tags = project.tags || [];
+                      const isExternal = Array.isArray(tags) 
+                        ? tags.includes("external")
+                        : typeof tags === "string" 
+                          ? tags.toLowerCase().includes("external")
+                          : false;
+
+                      return (
+                        <motion.tr
+                          key={project.$id}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                        >
+                          <td className="font-mono text-xs sm:text-sm whitespace-nowrap">
+                            {index + 1}
+                          </td>
+                          <td className="font-semibold text-sm sm:text-base">
+                            {project.name || "Untitled Project"}
+                          </td>
+                          <td className="text-xs sm:text-sm text-[var(--text-secondary)] max-w-xs truncate hidden md:table-cell">
+                            {project.description || "No description available"}
+                          </td>
+                          <td>
+                            {project.project_url ? (
+                              <button
+                                onClick={() => {
+                                  if (isExternal || project.project_url.startsWith('http')) {
+                                    // For external links, ensure proper URL format
+                                    const url = project.project_url.startsWith('http') 
+                                      ? project.project_url 
+                                      : `https://${project.project_url}`;
+                                    window.open(url, '_blank');
+                                  } else {
+                                    navigate(project.project_url);
+                                  }
+                                }}
+                                className="btn btn-sm btn-pink"
+                              >
+                                {isExternal || project.project_url.startsWith('http') ? (
+                                  <ExternalLink className="w-4 h-4" />
+                                ) : (
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                  </svg>
+                                )}
+                                View
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => toast.error('Project URL missing')}
+                                className="btn btn-sm bg-gray-400 text-white cursor-not-allowed"
+                                disabled
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                                No URL
+                              </button>
+                            )}
+                          </td>
+                        </motion.tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
