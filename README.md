@@ -2,7 +2,7 @@
 
 A modern, beautifully themed web application built with React and Appwrite, featuring a complete light/dark mode implementation with smooth animations and custom fonts.
 
-## Ìæ® Features
+##  Features
 
 ### Theme System
 - **Light & Dark Mode**: Full theme support with smooth transitions
@@ -21,7 +21,7 @@ A modern, beautifully themed web application built with React and Appwrite, feat
 - **Project**: web-tools at http://localhost/v1
 - **Request Logging**: Beautiful log viewer with status indicators
 
-## Ì∫Ä Getting Started
+##  Getting Started
 
 ```bash
 # Install dependencies
@@ -33,7 +33,7 @@ npm run dev
 
 App runs at `http://localhost:5173`
 
-## Ìæ≠ Theme System
+##  Theme System
 
 ```jsx
 import { useTheme } from './context/ThemeContext';
@@ -44,7 +44,7 @@ function MyComponent() {
 }
 ```
 
-## Ì¥ß Technologies
+##  Technologies
 
 - React 19
 - Vite 6
@@ -52,7 +52,7 @@ function MyComponent() {
 - Appwrite 21.2.1
 - Google Fonts
 
-## Ì≥Å Structure
+##  Structure
 
 ```
 src/
@@ -63,11 +63,11 @@ src/
 ‚îî‚îÄ‚îÄ App.css
 ```
 
-## Ìæ® Color Palette
+##  Color Palette
 
 **Light Mode**: White background, gray text, pink accent
 **Dark Mode**: Slate background, light text, hot pink accent
 
-## Ì≥ù License
+##  License
 
 MIT License - Open source
