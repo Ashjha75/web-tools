@@ -63,6 +63,16 @@ function App() {
               <p className="text-lg font-bold">Projects Portfolio</p>
             </div>
             <div className="flex items-center gap-4">
+              <a
+                href="https://ashjha75.github.io/portfolio-web/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-secondary btn-sm flex items-center gap-2"
+                title="Open Portfolio"
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span className="hidden sm:inline">Portfolio</span>
+              </a>
               {user && (
                 <>
                   <Link
