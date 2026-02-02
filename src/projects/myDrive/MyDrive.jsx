@@ -69,10 +69,10 @@ export default function MyDrive() {
 
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
-              <img src={logo} alt="myDrive Logo" className="w-12 h-12 sm:w-14 sm:h-14" />
+              <img src={logo} alt="Mydrive Logo" className="w-12 h-12 sm:w-14 sm:h-14" />
               <div>
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-[var(--text-primary)]">
-                  myDrive
+                  Mydrive
                 </h1>
                 <p className="text-sm sm:text-base text-[var(--text-secondary)] mt-1">
                   Your personal cloud storage powered by Appwrite

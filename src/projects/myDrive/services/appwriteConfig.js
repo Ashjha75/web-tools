@@ -1,6 +1,6 @@
 import { Client, Storage, Account } from "appwrite";
 
-// Appwrite configuration for myDrive project
+// Appwrite configuration for Mydrive project
 // Reuse the main client to maintain authentication session
 const client = new Client();
 

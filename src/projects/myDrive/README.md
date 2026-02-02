@@ -1,4 +1,4 @@
-# myDrive - Cloud Storage Project
+# Mydrive - Cloud Storage Project
 
 A personal cloud storage application built with React and Appwrite Storage API.
 
@@ -20,7 +20,7 @@ A personal cloud storage application built with React and Appwrite Storage API.
 2. Create a new Storage Bucket:
    - Navigate to **Storage** section
    - Click **Create Bucket**
-   - Give it a name (e.g., "myDrive")
+   - Give it a name (e.g., "Mydrive")
    - Copy the **Bucket ID**
 
 3. Set Bucket Permissions:
@@ -48,14 +48,14 @@ Replace:
 npm run dev
 ```
 
-Navigate to `/projects/mydrive` to access myDrive.
+Navigate to `/projects/mydrive` to access Mydrive.
 
 ## File Structure
 
 ```
 src/projects/myDrive/
 ├── assets/
-│   └── logo.svg              # myDrive logo
+│   └── logo.svg              # Mydrive logo
 ├── components/
 │   ├── FileUpload.jsx        # Upload component with drag-and-drop
 │   └── FileList.jsx          # File list with CRUD operations
@@ -88,7 +88,7 @@ The `fileService` provides:
 
 - Files are stored in Appwrite Storage
 - Access is controlled by Appwrite permissions
-- User must be authenticated to access myDrive
+- User must be authenticated to access Mydrive
 - Always use role-based permissions in production
 
 ## Future Enhancements
